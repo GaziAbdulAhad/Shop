@@ -22,7 +22,7 @@ function imgFail(el){if(el.dataset.f)return;el.dataset.f=1;const m=el.src.match(
 function imgList(p){return String(p.image||"").split(/[\s,|]+/).filter(Boolean)}
 function mediaHTML(p){
   const id=ytId(p.video);
-  if(id)return `<iframe src="https://www.youtube-nocookie.com/embed/${id}" title="${esc(p.name)}" loading="lazy" allowfullscreen></iframe>`;
+  if(id)return `<iframe src="https://www.youtube-nocookie.com/embed/${id}" title="${esc(p.name)}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
   if(imgList(p).length)return `<img src="${esc(imgURL(imgList(p)[0]))}" referrerpolicy="no-referrer" alt="${esc(p.name)}" loading="lazy">`;
   return `<div class="empty" style="border:0;height:100%;display:grid;place-items:center">ভিডিও/ছবি নেই</div>`;
 }
@@ -34,17 +34,20 @@ function cardHTML(p,admin){
 }
 function layout(){
   const cur=location.pathname.split("/").pop()||"index.html";
-  document.body.insertAdjacentHTML("afterbegin",`<header class="site"><div class="wrap"><a class="logo" href="index.html">${SHOP_NAME}</a><nav>${
+  document.body.insertAdjacentHTML("afterbegin",`<header class="site"><div class="wrap"><a class="logo" href="index.html">${SHOP_NAME}</a><nav aria-label="প্রধান মেনু">${
     PAGES.map(p=>`<a href="${p.href}" class="${p.href===cur?"on":""}">${p.label}</a>`).join("")}</nav></div></header>`);
   document.body.insertAdjacentHTML("beforeend",`<footer class="site"><div class="wrap">© ${new Date().getFullYear()} ${SHOP_NAME}</div></footer>`);
 }
-async function renderList(el,admin){
-  el.innerHTML=`<div class="empty" style="grid-column:1/-1">লোড হচ্ছে...</div>`;
+let _c=null;
+async function renderList(el,admin,q){
+  if(!_c)el.innerHTML=Array(6).fill('<div class="card sk"><div class="sk-i"></div><div class="body"><i></i><i></i><i></i></div></div>').join("");
   try{
-    const l=await getProducts();
-    el.innerHTML=l.length?l.map(p=>cardHTML(p,admin)).join(""):`<div class="empty" style="grid-column:1/-1">এখনও কোনো প্রোডাক্ট নেই। <a href="admin.html">প্রথম প্রোডাক্ট যোগ করুন</a></div>`;
+    if(!_c||admin)_c=await getProducts();
+    const t=(q||"").toLowerCase();
+    const l=t?_c.filter(p=>(p.name+" "+(p.desc||"")).toLowerCase().includes(t)):_c;
+    el.innerHTML=l.length?l.map(p=>cardHTML(p,admin)).join(""):`<div class="empty" style="grid-column:1/-1">${t?"কোনো প্রোডাক্ট পাওয়া যায়নি।":'এখনও কোনো প্রোডাক্ট নেই। <a href="admin.html">প্রথম প্রোডাক্ট যোগ করুন</a>'}</div>`;
     l.forEach(p=>{const r=el.querySelector('[data-gal="'+CSS.escape(String(p.id))+'"]');if(r)initGallery(r,p)});
-  }catch(e){el.innerHTML=`<div class="empty" style="grid-column:1/-1">প্রোডাক্ট লোড করা যায়নি। API_URL ঠিক আছে কিনা দেখুন।</div>`}
+  }catch(e){el.innerHTML=`<div class="empty" style="grid-column:1/-1">প্রোডাক্ট লোড করা যায়নি। ইন্টারনেট বা API_URL ঠিক আছে কিনা দেখুন।</div>`}
 }
 
 function openLightbox(urls,start){
@@ -70,11 +73,13 @@ function initGallery(root,p){
   root.className="gal";
   root.innerHTML=`<div class="stage"><div class="view"></div>${many?'<button class="nav prev" aria-label="আগের">&#10094;</button><button class="nav next" aria-label="পরের">&#10095;</button>':''}</div>`+
    (many?`<div class="thumbs">${items.map((it,n)=>`<button class="th" data-n="${n}" aria-label="মিডিয়া ${n+1}">${it.t==="v"?`<img src="https://img.youtube.com/vi/${it.id}/mqdefault.jpg" alt=""><span class="play">&#9654;</span>`:`<img src="${esc(imgURL(it.u,300))}" alt="" loading="lazy" onerror="imgFail(this)">`}</button>`).join("")}</div>`:"")+
-   (hasImg?'<p class="hint">জুম করতে ছবিতে ক্লিক করুন</p>':"");
-  const view=root.querySelector(".view"),tb=root.querySelector(".thumbs"),ths=root.querySelectorAll(".th");let i=0;
+   '<p class="hint"></p>';
+  const view=root.querySelector(".view"),hint=root.querySelector(".hint"),tb=root.querySelector(".thumbs"),ths=root.querySelectorAll(".th");let i=0;
   function show(n){
     i=(n+items.length)%items.length;const it=items[i];
-    view.innerHTML=it.t==="v"?`<iframe src="https://www.youtube-nocookie.com/embed/${it.id}" title="${esc(p.name)}" allowfullscreen></iframe>`:`<img src="${esc(imgURL(it.u,1000))}" alt="${esc(p.name)}" referrerpolicy="no-referrer" style="cursor:zoom-in" onerror="imgFail(this)">`;
+    const yt=it.t==="v"?"https://www.youtube.com/watch?v="+it.id:"";
+    view.innerHTML=it.t==="v"?(location.protocol==="file:"?`<a class="ytposter" href="${yt}" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/${it.id}/hqdefault.jpg" alt="${esc(p.name)}"><span class="play big">&#9654;</span></a>`:`<iframe src="https://www.youtube-nocookie.com/embed/${it.id}" title="${esc(p.name)}" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`):`<img src="${esc(imgURL(it.u,1000))}" alt="${esc(p.name)}" referrerpolicy="no-referrer" style="cursor:zoom-in" onerror="imgFail(this)">`;
+    hint.innerHTML=it.t==="v"?`ভিডিও চলছে না? <a href="${yt}" target="_blank" rel="noopener">YouTube-এ দেখুন</a>`:"জুম করতে ছবিতে ক্লিক করুন";
     ths.forEach((b,k)=>b.classList.toggle("on",k===i));
     if(tb)tb.scrollTo({left:ths[i].offsetLeft-tb.clientWidth/2+ths[i].clientWidth/2,behavior:"smooth"});
   }
@@ -83,7 +88,7 @@ function initGallery(root,p){
     if(t)show(+t.dataset.n);
     else if(e.target.closest(".prev"))show(i-1);
     else if(e.target.closest(".next"))show(i+1);
-    else if(e.target.tagName==="IMG"&&view.contains(e.target)){const urls=items.filter(x=>x.t==="i").map(x=>x.u);openLightbox(urls,urls.indexOf(items[i].u))}
+    else if(e.target.tagName==="IMG"&&items[i].t==="i"&&view.contains(e.target)){const urls=items.filter(x=>x.t==="i").map(x=>x.u);openLightbox(urls,urls.indexOf(items[i].u))}
   });
   show(0);
 }
