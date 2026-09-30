@@ -15,7 +15,7 @@
   let p;
   try{p=(await getProducts()).find(x=>String(x.id)===String(id))}catch(e){}
   if(!p){wrap.innerHTML=`<div class="empty">প্রোডাক্টটি পাওয়া যায়নি। <a href="index.html">হোমে ফিরে যান</a></div>`;return}
-  wrap.innerHTML=`<div class="card"><div class="media">${mediaHTML(p)}</div><div class="body">
+  wrap.innerHTML=`<div class="card"><div id="gal"></div><div class="body">
     <h3>${esc(p.name)}</h3><div class="price">৳ ${esc(p.price)}</div><p class="full">${esc(p.desc||"")}</p></div></div>
   <form class="box" id="f" style="margin:0">
     <div class="two"><label>আপনার নাম<input name="name" required maxlength="80" autocomplete="name"></label>
@@ -26,6 +26,7 @@
     <label>নোট (ঐচ্ছিক)<input name="note" maxlength="200"></label>
     <div class="row"><button class="btn gold" id="go" type="submit">অর্ডার কনফার্ম করুন</button><span class="msg" id="msg" role="status"></span></div>
   </form>`;
+  initGallery(document.getElementById("gal"),p);
   const f=document.getElementById("f"),msg=document.getElementById("msg");
   f.qty.addEventListener("input",()=>document.getElementById("total").value="৳ "+((Number(p.price)||0)*(Number(f.qty.value)||1)));
   f.addEventListener("submit",async e=>{
