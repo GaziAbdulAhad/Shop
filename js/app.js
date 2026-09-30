@@ -14,14 +14,15 @@ function ytId(url){
   const m=String(url||"").match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/);
   return m?m[1]:null;
 }
-function imgURL(u){
+function imgURL(u,w){
   const m=String(u||"").match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:.*&)?id=|thumbnail\?(?:.*&)?id=)([\w-]+)/);
-  return m?`https://drive.google.com/thumbnail?id=${m[1]}&sz=w1000`:u;
+  return m?`https://drive.google.com/thumbnail?id=${m[1]}&sz=w${w||1000}`:u;
 }
+function imgList(p){return String(p.image||"").split(/[\s,|]+/).filter(Boolean)}
 function mediaHTML(p){
   const id=ytId(p.video);
   if(id)return `<iframe src="https://www.youtube-nocookie.com/embed/${id}" title="${esc(p.name)}" loading="lazy" allowfullscreen></iframe>`;
-  if(p.image)return `<img src="${esc(imgURL(p.image))}" referrerpolicy="no-referrer" alt="${esc(p.name)}" loading="lazy">`;
+  if(imgList(p).length)return `<img src="${esc(imgURL(imgList(p)[0]))}" referrerpolicy="no-referrer" alt="${esc(p.name)}" loading="lazy">`;
   return `<div class="empty" style="border:0;height:100%;display:grid;place-items:center">ভিডিও/ছবি নেই</div>`;
 }
 function cardHTML(p,admin){
@@ -42,5 +43,46 @@ async function renderList(el,admin){
     const l=await getProducts();
     el.innerHTML=l.length?l.map(p=>cardHTML(p,admin)).join(""):`<div class="empty" style="grid-column:1/-1">এখনও কোনো প্রোডাক্ট নেই। <a href="admin.html">প্রথম প্রোডাক্ট যোগ করুন</a></div>`;
   }catch(e){el.innerHTML=`<div class="empty" style="grid-column:1/-1">প্রোডাক্ট লোড করা যায়নি। API_URL ঠিক আছে কিনা দেখুন।</div>`}
+}
+
+function openLightbox(urls,start){
+  let k=start,z=false;
+  const lb=document.createElement("div");lb.className="lb";lb.setAttribute("role","dialog");lb.setAttribute("aria-label","ছবি জুম");
+  lb.innerHTML=`<button class="lbx" aria-label="বন্ধ করুন">&times;</button>${urls.length>1?'<button class="nav prev" aria-label="আগের">&#10094;</button><button class="nav next" aria-label="পরের">&#10095;</button>':''}<div class="lbimg"><img alt=""></div>`;
+  document.body.appendChild(lb);document.body.style.overflow="hidden";
+  const box=lb.querySelector(".lbimg"),im=lb.querySelector("img");
+  function set(n){k=(n+urls.length)%urls.length;z=false;im.classList.remove("z");im.style.transformOrigin="";im.src=imgURL(urls[k],2000)}
+  function close(){lb.remove();document.body.style.overflow="";document.removeEventListener("keydown",key)}
+  function key(e){if(e.key==="Escape")close();else if(e.key==="ArrowLeft")set(k-1);else if(e.key==="ArrowRight")set(k+1)}
+  im.addEventListener("click",()=>{z=!z;im.classList.toggle("z",z)});
+  box.addEventListener("pointermove",e=>{if(!z)return;const r=box.getBoundingClientRect();im.style.transformOrigin=((e.clientX-r.left)/r.width*100)+"% "+((e.clientY-r.top)/r.height*100)+"%"});
+  lb.addEventListener("click",e=>{if(e.target.closest(".prev"))set(k-1);else if(e.target.closest(".next"))set(k+1);else if(e.target.closest(".lbx"))close()});
+  document.addEventListener("keydown",key);set(k);
+}
+function initGallery(root,p){
+  const items=[],v=ytId(p.video);
+  if(v)items.push({t:"v",id:v});
+  imgList(p).forEach(u=>items.push({t:"i",u}));
+  if(!items.length){root.innerHTML=`<div class="empty" style="border:0">ছবি/ভিডিও নেই</div>`;return}
+  const many=items.length>1,hasImg=items.some(x=>x.t==="i");
+  root.className="gal";
+  root.innerHTML=`<div class="stage"><div class="view"></div>${many?'<button class="nav prev" aria-label="আগের">&#10094;</button><button class="nav next" aria-label="পরের">&#10095;</button>':''}</div>`+
+   (many?`<div class="thumbs">${items.map((it,n)=>`<button class="th" data-n="${n}" aria-label="মিডিয়া ${n+1}">${it.t==="v"?`<img src="https://img.youtube.com/vi/${it.id}/mqdefault.jpg" alt=""><span class="play">&#9654;</span>`:`<img src="${esc(imgURL(it.u,300))}" alt="" loading="lazy">`}</button>`).join("")}</div>`:"")+
+   (hasImg?'<p class="hint">জুম করতে ছবিতে ক্লিক করুন</p>':"");
+  const view=root.querySelector(".view"),tb=root.querySelector(".thumbs"),ths=root.querySelectorAll(".th");let i=0;
+  function show(n){
+    i=(n+items.length)%items.length;const it=items[i];
+    view.innerHTML=it.t==="v"?`<iframe src="https://www.youtube-nocookie.com/embed/${it.id}" title="${esc(p.name)}" allowfullscreen></iframe>`:`<img src="${esc(imgURL(it.u,1000))}" alt="${esc(p.name)}" referrerpolicy="no-referrer" style="cursor:zoom-in">`;
+    ths.forEach((b,k)=>b.classList.toggle("on",k===i));
+    if(tb)tb.scrollTo({left:ths[i].offsetLeft-tb.clientWidth/2+ths[i].clientWidth/2,behavior:"smooth"});
+  }
+  root.addEventListener("click",e=>{
+    const t=e.target.closest(".th");
+    if(t)show(+t.dataset.n);
+    else if(e.target.closest(".prev"))show(i-1);
+    else if(e.target.closest(".next"))show(i+1);
+    else if(e.target.tagName==="IMG"&&view.contains(e.target)){const urls=items.filter(x=>x.t==="i").map(x=>x.u);openLightbox(urls,urls.indexOf(items[i].u))}
+  });
+  show(0);
 }
 layout();
