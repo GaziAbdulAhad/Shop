@@ -36,7 +36,7 @@ f.addEventListener("submit",async e=>{
     const photo=file?await shrink(file):"";
     const r=await api({action:"review",review:{orderId:d.orderId,phone:d.phone,rating,name:d.name,text:d.text,photo}});
     if(!r.ok)throw new Error(r.error||"রিভিউ জমা হয়নি");
-    document.getElementById("rv").innerHTML=`<div class="ok"><div class="tick">✓</div><h1 style="font-size:1.6rem">ধন্যবাদ!</h1><p>আপনার রিভিউ জমা হয়েছে। যাচাইয়ের পর এটি ওয়েবসাইটে প্রকাশ করা হবে।</p><a class="btn gold" href="index.html">🏠 হোমে ফিরে যান</a></div>`;
+    document.getElementById("rv").innerHTML=`<div class="ok"><div class="tick">✓</div><h1 style="font-size:1.6rem">ধন্যবাদ!</h1><p>আপনার রিভিউ জমা হয়েছে। যাচাইয়ের পর এটি ওয়েবসাইটে প্রকাশ করা হবে।</p>${r.photoFailed?"<p>ছবিটি আপলোড করা যায়নি, তবে আপনার লেখা রিভিউ জমা হয়েছে।</p>":""}<a class="btn gold" href="index.html">🏠 হোমে ফিরে যান</a></div>`;
   }catch(err){go.disabled=false;msg.style.color="#ff7b6b";msg.textContent=err.message||"সমস্যা হয়েছে, আবার চেষ্টা করুন।"}
 });
 </script></body></html>
