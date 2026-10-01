@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin"><meta name="theme-color" content="#100B14">
+<title>প্রোডাক্ট | আমার দোকান</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head>
+<body class="has-cta"><main class="wrap" id="pd"><p class="sub" style="margin-top:28px">লোড হচ্ছে...</p></main>
+<script src="js/app.js"></script>
+<script>
+(async()=>{
+  const root=document.getElementById("pd"),id=new URLSearchParams(location.search).get("id");
+  let p;try{p=(await loadAll()).find(x=>String(x.id)===String(id))}catch(e){}
+  if(!p){root.innerHTML='<div class="empty" style="margin-top:28px">প্রোডাক্টটি পাওয়া যায়নি। <a href="index.html">হোমে ফিরে যান</a></div>';return}
+  document.title=p.name+" | "+SHOP_NAME;
+  const lines=String(p.desc||"").split(/\n+/).map(x=>x.trim()).filter(Boolean),order="order.html?id="+encodeURIComponent(p.id);
+  root.innerHTML=`<a class="back" href="index.html">← সব প্রোডাক্ট</a>
+  <div class="pd"><div class="card" id="gal"></div><div class="info"><h1>${esc(p.name)}</h1>${ratingHTML(p)}${priceHTML(p)}
+  <ul class="trust">${TRUST.slice(0,3).map(t=>`<li>✓ ${t[1]}</li>`).join("")}</ul>
+  <a class="btn gold big" href="${order}">এখনই অর্ডার করুন</a></div></div>
+  ${lines.length?`<section class="det"><h2 class="sec">প্রোডাক্ট ডিটেইলস</h2><ul class="dl">${lines.map(l=>`<li>${esc(l)}</li>`).join("")}</ul></section>`:""}
+  <section id="vid"></section><section id="rv"></section>
+  <div class="sticky-cta"><span>${tk(p.price)}</span><a class="btn gold" href="${order}">এখনই অর্ডার করুন</a></div>`;
+  initGallery(document.getElementById("gal"),{...p,video:""});
+  videoBlock(document.getElementById("vid"),p);
+  getReviews(p.id).then(l=>{document.getElementById("rv").innerHTML=`<h2 class="sec">কাস্টমার রিভিউ</h2>`+(l.length?l.map(r=>`<div class="rev"><div>${stars(r.rating)} <b>${esc(r.name)}</b> ${r.verified?'<span class="vf">✓ Verified Purchase</span>':""}</div>${r.text?`<p>${esc(r.text)}</p>`:""}${r.photo?`<a href="${esc(imgURL(r.photo,1400))}" target="_blank" rel="noopener"><img class="rph" src="${esc(imgURL(r.photo,400))}" alt="ক্রেতার ছবি" loading="lazy" onerror="imgFail(this)"></a>`:""}</div>`).join(""):`<p class="hint" style="margin:0 0 8px">এখনও কোনো রিভিউ নেই।</p>`)+`<p class="hint" style="margin:8px 0">ডেলিভারি পাওয়া ক্রেতারা <a href="review.html">রিভিউ লিখুন</a></p>`}).catch(()=>{});
+})();
+</script></body></html>

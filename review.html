@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin"><meta name="theme-color" content="#100B14">
+<title>রিভিউ লিখুন | আমার দোকান</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head>
+<body><main class="wrap co-wrap" id="rv">
+<h1 style="font-size:1.7rem;margin-top:28px">আপনার অভিজ্ঞতা জানান</h1>
+<p class="sub" style="text-align:left">ডেলিভারি পাওয়া অর্ডারের রিভিউ দেওয়া যাবে। যাচাইয়ের পর রিভিউ প্রকাশ করা হয়।</p>
+<form class="box" id="f">
+<label>অর্ডার নম্বর<input name="orderId" required placeholder="ORD-..." autocomplete="off"></label>
+<label>অর্ডারের মোবাইল নম্বর<input name="phone" type="tel" inputmode="numeric" required placeholder="01XXXXXXXXX"></label>
+<fieldset class="dv"><legend>রেটিং</legend><div class="starin" id="st">
+<button type="button" data-n="1" aria-label="১ স্টার">★</button><button type="button" data-n="2" aria-label="২ স্টার">★</button><button type="button" data-n="3" aria-label="৩ স্টার">★</button><button type="button" data-n="4" aria-label="৪ স্টার">★</button><button type="button" data-n="5" aria-label="৫ স্টার">★</button></div></fieldset>
+<label>আপনার নাম<input name="name" required maxlength="60" autocomplete="name"></label>
+<label>পণ্যটি কেমন লেগেছে?<textarea name="text" rows="4" maxlength="500" placeholder="আপনার মতামত লিখুন"></textarea></label>
+<label>ছবি দিন (ঐচ্ছিক)<input id="ph" type="file" accept="image/*"></label>
+<button class="btn gold big" id="go" type="submit">রিভিউ সাবমিট করুন</button><p class="msg" id="msg" role="status"></p>
+</form></main>
+<script src="js/app.js"></script>
+<script>
+const f=document.getElementById("f"),msg=document.getElementById("msg");let rating=0;
+const o=new URLSearchParams(location.search).get("o");if(o)f.orderId.value=o;
+document.getElementById("st").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;rating=+b.dataset.n;
+  document.querySelectorAll("#st button").forEach(x=>x.classList.toggle("on",+x.dataset.n<=rating))});
+function shrink(file,max=1000){return new Promise((res,rej)=>{const im=new Image(),u=URL.createObjectURL(file);
+  im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
+    c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",.82).split(",")[1])};
+  im.onerror=()=>rej(new Error("ছবি পড়া যায়নি"));im.src=u})}
+f.addEventListener("submit",async e=>{
+  e.preventDefault();
+  if(!rating){msg.style.color="#ff7b6b";msg.textContent="স্টার দিয়ে রেটিং বেছে নিন।";return}
+  const d=Object.fromEntries(new FormData(f)),go=document.getElementById("go");go.disabled=true;msg.style.color="";msg.textContent="পাঠানো হচ্ছে...";
+  try{
+    const file=document.getElementById("ph").files[0];
+    const photo=file?await shrink(file):"";
+    const r=await api({action:"review",review:{orderId:d.orderId,phone:d.phone,rating,name:d.name,text:d.text,photo}});
+    if(!r.ok)throw new Error(r.error||"রিভিউ জমা হয়নি");
+    document.getElementById("rv").innerHTML=`<div class="ok"><div class="tick">✓</div><h1 style="font-size:1.6rem">ধন্যবাদ!</h1><p>আপনার রিভিউ জমা হয়েছে। যাচাইয়ের পর এটি ওয়েবসাইটে প্রকাশ করা হবে।</p><a class="btn gold" href="index.html">🏠 হোমে ফিরে যান</a></div>`;
+  }catch(err){go.disabled=false;msg.style.color="#ff7b6b";msg.textContent=err.message||"সমস্যা হয়েছে, আবার চেষ্টা করুন।"}
+});
+</script></body></html>

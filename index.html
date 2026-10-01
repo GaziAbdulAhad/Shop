@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin"><meta name="theme-color" content="#100B14">
+<title>হোম | আমার দোকান</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head>
+<body>
+<section class="hero"><div class="wrap">
+<h1>নতুন কালেকশন</h1>
+<p class="sub">আপনার পছন্দের পণ্য এখন এক জায়গায়</p>
+<div class="search"><input id="q" type="search" placeholder="প্রোডাক্ট খুঁজুন..." aria-label="প্রোডাক্ট খুঁজুন"></div>
+</div></section>
+<main class="wrap" id="products">
+<div class="chips" id="chips"></div>
+<h2 class="sec">সব প্রোডাক্ট</h2>
+<section class="grid" id="list"></section>
+<h2 class="sec" style="text-align:center">কেন আমাদের কাছ থেকে কিনবেন?</h2>
+<div class="trust-strip" id="trust"></div>
+</main>
+<script src="js/app.js"></script>
+<script>
+const list=document.getElementById("list"),q=document.getElementById("q"),chips=document.getElementById("chips");let cat="";
+document.getElementById("trust").innerHTML=TRUST.map(t=>`<div><span>${t[0]}</span>${t[1]}</div>`).join("");
+const go=()=>renderList(list,false,q.value.trim(),cat);
+(async()=>{await renderList(list,false);
+  const cs=[...new Set((_c||[]).map(p=>p.category).filter(Boolean))];
+  if(cs.length)chips.innerHTML=["",...cs].map(c=>`<button class="chip${c?"":" on"}" data-c="${esc(c)}">${c?esc(c):"সব"}</button>`).join("")})();
+chips.addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;cat=b.dataset.c;chips.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));go()});
+q.addEventListener("input",go);
+</script></body></html>
