@@ -1,5 +1,5 @@
 /* নতুন পেজ যোগ করতে: ১) নতুন .html ফাইল বানান ২) নিচের PAGES-এ এক লাইন যোগ করুন */
-const PAGES=[{href:"index.html",label:"হোম"},{href:"index.html#products",label:"কালেকশন"},{href:"about.html",label:"আমাদের সম্পর্কে"}];
+const PAGES=[{href:"index.html",label:"হোম"},{href:"index.html#products",label:"কালেকশন"},{href:"about.html",label:"আমাদের সম্পর্কে"},{href:"contact.html",label:"যোগাযোগ"},{href:"policy.html",label:"নীতিমালা"}];
 const SHOP_NAME="আমার দোকান";
 const SITE_BASE=""; // অ্যাডমিন repo-তে এখানে মূল সাইটের পুরো ঠিকানা বসে
 const API_URL="https://script.google.com/macros/s/AKfycbyTY_4ZcXBPa1a6d4hqLsWLall8TqBLAAZhv0RjPdlblG5QOu7ikfMkklRnycJav1AB/exec"; // Apps Script Web App URL
@@ -53,7 +53,7 @@ function layout(){
   document.body.insertAdjacentHTML("afterbegin",`<header class="site"><div class="wrap"><a class="logo" href="${SITE_BASE}index.html">${SHOP_NAME}</a><button class="burger" aria-label="মেনু" aria-expanded="false">☰</button><nav aria-label="প্রধান মেনু">${PAGES.map(p=>`<a href="${SITE_BASE}${p.href}" class="${p.href===cur?"on":""}">${p.label}</a>`).join("")}</nav></div></header>`);
   const b=document.querySelector(".burger");
   b.onclick=()=>{const o=document.body.classList.toggle("menu");b.setAttribute("aria-expanded",o);b.textContent=o?"✕":"☰"};
-  document.body.insertAdjacentHTML("beforeend",`<footer class="site"><div class="wrap"><strong>${SHOP_NAME}</strong><br>© ${new Date().getFullYear()} All Rights Reserved</div></footer>`);
+  document.body.insertAdjacentHTML("beforeend",`<footer class="site"><div class="wrap"><strong>${SHOP_NAME}</strong><br><a href="${SITE_BASE}policy.html">নীতিমালা</a> · <a href="${SITE_BASE}contact.html">যোগাযোগ</a><br>© ${new Date().getFullYear()} All Rights Reserved</div></footer>`);
 }
 
 function openLightbox(urls,start){
