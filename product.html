@@ -5,7 +5,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css"></head>
 <body class="has-cta"><main class="wrap" id="pd"><p class="sub" style="margin-top:28px">লোড হচ্ছে...</p></main>
-<script src="js/app.js"></script>
+<script src="js/app.js"></script><script src="js/policies.js"></script><script src="js/shop.js"></script>
 <script>
 (async()=>{
   const root=document.getElementById("pd"),id=new URLSearchParams(location.search).get("id");
@@ -16,7 +16,7 @@
   root.innerHTML=`<a class="back" href="index.html">← সব প্রোডাক্ট</a>
   <div class="pd"><div class="card" id="gal"></div><div class="info"><h1>${esc(p.name)}</h1>${ratingHTML(p)}${priceHTML(p)}
   <ul class="trust">${TRUST.slice(0,3).map(t=>`<li>✓ ${t[1]}</li>`).join("")}</ul>
-  <a class="btn gold big" href="${order}">এখনই অর্ডার করুন</a></div></div>
+  <a class="btn gold big" href="${order}">এখনই অর্ডার করুন</a>${contactBtns()}${quickAcc()}</div></div>
   ${lines.length?`<section class="det"><h2 class="sec">প্রোডাক্ট ডিটেইলস</h2><ul class="dl">${lines.map(l=>`<li>${esc(l)}</li>`).join("")}</ul></section>`:""}
   <section id="vid"></section><section id="rv"></section>
   <div class="sticky-cta"><span>${tk(p.price)}</span><a class="btn gold" href="${order}">এখনই অর্ডার করুন</a></div>`;
