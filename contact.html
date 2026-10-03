@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin"><meta name="theme-color" content="#100B14">
+<title>যোগাযোগ | আমার দোকান</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head>
+<body><main class="wrap" style="max-width:820px">
+<div style="text-align:center;margin:28px 0 20px"><div style="font-size:2.4rem">📞</div>
+<h1 style="font-size:2rem;margin:4px 0">যোগাযোগ করুন</h1><p class="sub" style="margin:0 auto">Contact Us</p></div>
+<div id="demo"></div><div class="cgrid" id="cg"></div></main>
+<script src="js/app.js"></script><script src="js/shop.js"></script>
+<script>
+if(DEMO)document.getElementById("demo").innerHTML='<div class="demo">⚠️ এটি ডেমো তথ্য। <b>js/shop.js</b> ফাইলে আপনার আসল নম্বর, ঠিকানা ও সময় বসান। X-যুক্ত নম্বর বদলালে এই বার্তা নিজেই চলে যাবে।</div>';
+const c=[];
+c.push(`<div class="cc"><b>📞 হেল্পলাইন</b><p>${esc(SHOP.phone)}</p>${DEMO?"":`<a class="btn tel" href="tel:${esc(SHOP.phone)}">কল করুন</a>`}</div>`);
+c.push(`<div class="cc"><b>💬 WhatsApp</b><p>${esc(SHOP.whatsapp)}</p>${DEMO?"":`<a class="btn wa" href="${waHref("")}" target="_blank" rel="noopener">WhatsApp-এ লিখুন</a>`}</div>`);
+if(SHOP.messenger)c.push(`<div class="cc"><b>💙 Messenger</b><p>Facebook-এ মেসেজ করুন</p><a class="btn tel" href="${esc(SHOP.messenger)}" target="_blank" rel="noopener">Messenger খুলুন</a></div>`);
+if(SHOP.facebook)c.push(`<div class="cc"><b>👍 Facebook পেজ</b><p>আমাদের পেজ দেখুন</p><a class="btn tel" href="${esc(SHOP.facebook)}" target="_blank" rel="noopener">পেজে যান</a></div>`);
+if(SHOP.email)c.push(`<div class="cc"><b>✉️ ইমেইল</b><p>${esc(SHOP.email)}</p><a class="btn tel" href="mailto:${esc(SHOP.email)}">ইমেইল করুন</a></div>`);
+c.push(`<div class="cc"><b>🕐 সাপোর্টের সময়</b><p>${SHOP.hours[0]}</p></div>`);
+c.push(`<div class="cc"><b>📍 অফিসের ঠিকানা</b><p>${esc(SHOP.address)}</p>${SHOP.map?`<a class="btn tel" href="${esc(SHOP.map)}" target="_blank" rel="noopener">ম্যাপে দেখুন</a>`:""}</div>`);
+document.getElementById("cg").innerHTML=c.join("");
+</script></body></html>
