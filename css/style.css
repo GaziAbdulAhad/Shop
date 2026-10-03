@@ -110,3 +110,20 @@ footer.site{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);t
 .rev p{margin:6px 0 0;color:var(--muted)}#rv{margin-bottom:28px}
 .starin{display:flex;gap:2px}.starin button{background:none;border:0;font-size:2.2rem;line-height:1;color:#4a3a55;cursor:pointer;min-width:44px;min-height:48px;padding:0}.starin button.on{color:var(--gold)}
 .vf{color:#6fd39a;font-size:.85rem;font-weight:600}.rph{max-width:170px;border-radius:10px;margin-top:8px;display:block}
+.acc{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.acc summary{padding:14px 16px;cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:48px}
+.acc summary::-webkit-details-marker{display:none}.acc summary::after{content:"▾";color:var(--muted);transition:transform .2s}
+.acc[open] summary::after{transform:rotate(180deg)}
+.acc .ab{padding:0 16px 14px;color:var(--muted)}.acc .ab p{margin:6px 0}.acc .ab ul{margin:6px 0;padding-left:20px}
+.cbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 6px}
+.btn.wa{background:#25a244;color:#fff}.btn.tel{background:transparent;border:1px solid var(--brand);color:var(--brand)}
+.pbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.lang button{background:none;border:0;color:var(--muted);padding:8px 16px;font:inherit;cursor:pointer;min-height:40px}.lang button.on{background:var(--brand);color:var(--on-brand);font-weight:600}
+.ps{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px}
+.ps h2{font-size:1.15rem;margin:0 0 8px}.ps p{margin:6px 0;color:#e6dfee}.ps ul{margin:6px 0;padding-left:20px;color:#e6dfee}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;padding-bottom:48px}
+.cc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.cc p{margin:0;color:var(--muted)}.cc .btn{margin-top:8px;width:100%}
+.demo{background:#3a2a14;border:1px solid var(--gold);color:#ffe7a8;padding:12px 16px;border-radius:12px;margin-bottom:16px}
+.ah{font-size:1rem;margin:12px 0 2px;color:#fff}.ah:first-child{margin-top:4px}
