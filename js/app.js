@@ -2,9 +2,6 @@
 const PAGES=[{href:"index.html",label:"হোম"},{href:"index.html#products",label:"কালেকশন"},{href:"about.html",label:"আমাদের সম্পর্কে"},{href:"contact.html",label:"যোগাযোগ"},{href:"policy.html",label:"নীতিমালা"}];
 const SHOP_NAME="আমার দোকান";
 const SITE_BASE=""; // অ্যাডমিন repo-তে এখানে মূল সাইটের পুরো ঠিকানা বসে
-/* হোমপেজের ক্যাটাগরি কার্ডে ঐচ্ছিক লাইন। শুধু সত্যি তথ্য লিখুন। উদাহরণ:
-   const CAT_INFO={"Komorer Bicha":{sub:"ঐতিহ্যবাহী ডিজাইন",feat:["হালকা ও আরামদায়ক","বিয়ে ও উৎসবের জন্য"]}}; */
-const CAT_INFO={};
 const API_URL="https://script.google.com/macros/s/AKfycbyTY_4ZcXBPa1a6d4hqLsWLall8TqBLAAZhv0RjPdlblG5QOu7ikfMkklRnycJav1AB/exec"; // Apps Script Web App URL
 const DELIVERY={in:{label:"ঢাকার ভিতরে",fee:60},out:{label:"ঢাকার বাইরে",fee:120}}; // Code.gs-এর DELIVERY_FEE-এর সাথে মিল রাখুন
 const TRUST=[["🚚","সারাদেশে ডেলিভারি"],["💵","ক্যাশ অন ডেলিভারি"],["✅","কোয়ালিটি চেক করা"],["💬","কাস্টমার সাপোর্ট"]]; // নিজের সত্যি তথ্য অনুযায়ী বদলান
