@@ -11,6 +11,7 @@
 <div class="search"><input id="q" type="search" placeholder="প্রোডাক্ট খুঁজুন..." aria-label="প্রোডাক্ট খুঁজুন"></div>
 </div></section>
 <main class="wrap" id="products">
+<div id="sc"></div>
 <div class="chips" id="chips"></div>
 <h2 class="sec">সব প্রোডাক্ট</h2>
 <section class="grid" id="list"></section>
@@ -24,7 +25,26 @@ document.getElementById("trust").innerHTML=TRUST.map(t=>`<div><span>${t[0]}</spa
 const go=()=>renderList(list,false,q.value.trim(),cat);
 (async()=>{await renderList(list,false);
   const cs=[...new Set((_c||[]).map(p=>p.category).filter(Boolean))];
-  if(cs.length)chips.innerHTML=["",...cs].map(c=>`<button class="chip${c?"":" on"}" data-c="${esc(c)}">${c?esc(c):"সব"}</button>`).join("")})();
+  if(cs.length)chips.innerHTML=["",...cs].map(c=>`<button class="chip${c?"":" on"}" data-c="${esc(c)}">${c?esc(c):"সব"}</button>`).join("");showcase()})();
 chips.addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;cat=b.dataset.c;chips.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));go()});
+const sc=document.getElementById("sc");
+function scCard(c,l){
+  const info=(typeof CAT_INFO!=="undefined"&&CAT_INFO[c])||{};
+  const imgs=l.map(cover).filter(Boolean);
+  l.forEach(p=>imgList(p).slice(1).forEach(u=>imgs.push(imgURL(u,500))));
+  const m=imgs[0],th=imgs.slice(1,4),prices=l.map(p=>Number(p.price)).filter(n=>n>0),min=prices.length?Math.min(...prices):0;
+  const im=u=>`<img src="${esc(u)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="imgFail(this)">`;
+  return `<article class="sc"><div class="sc-h"><h3>${esc(c)}</h3><p>${info.sub?esc(info.sub):l.length+" টি ডিজাইন"}</p></div>
+  <div class="sc-main">${m?im(m):""}</div><div class="sc-th">${th.map(u=>`<div>${im(u)}</div>`).join("")}</div>
+  <div class="sc-info">${info.feat&&info.feat.length?`<ul>${info.feat.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>`:""}
+  <div class="sc-row">${min?`<div class="sc-price"><small>দাম শুরু</small><b>${tk(min)}</b></div>`:"<span></span>"}<button class="btn gold" data-c="${esc(c)}">দেখুন</button></div></div></article>`;
+}
+function showcase(){
+  const all=_c||[],cs=[...new Set(all.map(p=>p.category).filter(Boolean))];
+  sc.innerHTML=cs.length?`<h2 class="sec">ক্যাটাগরি অনুযায়ী দেখুন</h2><div class="scg">${cs.map(c=>scCard(c,all.filter(p=>p.category===c))).join("")}</div>`:"";
+}
+sc.addEventListener("click",e=>{const b=e.target.closest("[data-c]");if(!b)return;cat=b.dataset.c;
+  chips.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x.dataset.c===cat));go();
+  list.scrollIntoView({behavior:"smooth",block:"start"})});
 q.addEventListener("input",go);
 </script></body></html>
