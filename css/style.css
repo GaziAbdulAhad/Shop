@@ -127,3 +127,49 @@ footer.site{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);t
 .cc p{margin:0;color:var(--muted)}.cc .btn{margin-top:8px;width:100%}
 .demo{background:#3a2a14;border:1px solid var(--gold);color:#ffe7a8;padding:12px 16px;border-radius:12px;margin-bottom:16px}
 .ah{font-size:1rem;margin:12px 0 2px;color:#fff}.ah:first-child{margin-top:4px}
+/* ===== প্রোডাক্ট পেজ: কম্পিউটারে ৫ নম্বর, ফোনে ৭ নম্বরের ধাঁচ ===== */
+.pd{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:32px}
+.pd .info{position:sticky;top:92px}
+.pd .gal{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;display:grid;grid-template-columns:minmax(0,1fr) 88px;gap:12px;align-items:start}
+.pd .gal:not(:has(.thumbs)){grid-template-columns:minmax(0,1fr)}
+.pd .gal .stage{grid-column:1;border-radius:12px;overflow:hidden;aspect-ratio:4/5}
+.pd .gal .thumbs{grid-column:2;grid-row:1;flex-direction:column;height:0;min-height:100%;overflow-y:auto;padding:0;gap:10px}
+.pd .gal .th{flex:0 0 auto;width:100%;height:auto;aspect-ratio:1/1}
+.pd .gal .hint{grid-column:1/-1;margin:0}
+.pbox{background:linear-gradient(135deg,#2a1d33,#221828);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:14px 0}
+.pbig{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}.pbig b{font-size:2.1rem;color:var(--brand);line-height:1.2}.pbig s{color:var(--muted);font-size:1.05rem}
+.psave{color:var(--gold);font-weight:600;margin-top:2px}
+.tcards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.tcards div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 6px;text-align:center;font-size:.85rem;color:var(--muted);line-height:1.35}
+.tcards span{display:block;font-size:1.4rem}
+.feat{list-style:none;padding:0;margin:0 0 12px;display:grid;gap:8px;max-width:720px;color:#e6dfee}
+.feat li::before{content:"✓";color:var(--gold);margin-right:8px;font-weight:700}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.tags span{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:2px 12px;font-size:.85rem;color:var(--muted)}
+.more{margin-bottom:40px}
+@media(max-width:760px){
+  .pd .info{position:static}
+  .pd .gal{grid-template-columns:minmax(0,1fr);padding:10px}
+  .pd .gal .stage{aspect-ratio:1/1}
+  .pd .gal .thumbs{grid-column:1;grid-row:auto;flex-direction:row;height:auto;min-height:0;overflow-x:auto;overflow-y:hidden}
+  .pd .gal .th{flex:0 0 calc((100% - 20px)/3);width:auto}
+  .pbig b{font-size:1.8rem}
+}
+/* Chat With Us / WhatsApp Us বোতাম */
+.cbtns{display:grid;grid-template-columns:1fr;gap:10px;margin:12px 0 6px}
+.cbtn{display:flex;align-items:center;justify-content:center;gap:10px;min-height:50px;border-radius:12px;color:#fff;font-weight:700;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,.3);transition:filter .15s,transform .1s}
+.cbtn:hover{filter:brightness(1.08)}.cbtn:active{transform:scale(.99)}
+.cbtn svg{width:20px;height:20px;fill:#fff;flex:none}
+.cbtn.ms{background:linear-gradient(90deg,#0a7cff,#00b2ff)}.cbtn.wa{background:linear-gradient(90deg,#25d366,#1fb455)}
+/* ভাসমান যোগাযোগ */
+.fab{position:fixed;right:16px;bottom:16px;z-index:45;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.fab-b{width:56px;height:56px;border-radius:50%;border:0;cursor:pointer;color:#fff;background:linear-gradient(135deg,#2e8b57,#2b4aa0);box-shadow:0 8px 24px rgba(0,0,0,.45);display:grid;place-items:center}
+.fab-b .o{width:24px;height:24px;fill:#fff}.fab-b .x{display:none;font-size:1.4rem}
+.fab.open .fab-b .o{display:none}.fab.open .fab-b .x{display:block}
+.fab-pop{width:min(320px,calc(100vw - 32px));background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 40px rgba(0,0,0,.55);overflow:hidden}
+.fab-pop[hidden]{display:none}
+.fab-h{padding:14px 16px;border-bottom:1px solid var(--line)}.fab-h b{display:block}.fab-h small{color:var(--muted)}
+.fab-i{display:flex;align-items:center;gap:12px;padding:12px 16px;color:var(--ink);text-decoration:none}
+.fab-i:hover{background:#241a2c}.fab-i b{display:block;font-weight:600}.fab-i small{color:var(--muted)}
+.fab-i .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none}
+.fab-i .ic svg{width:22px;height:22px;fill:#fff}.ic.wa{background:#25d366}.ic.ms{background:linear-gradient(135deg,#0a7cff,#00b2ff)}
+@media(max-width:760px){body.has-cta .fab{bottom:90px}}
