@@ -17,7 +17,7 @@ c.push(`<div class="cc"><b>💬 WhatsApp</b><p>${esc(SHOP.whatsapp)}</p>${DEMO?"
 if(SHOP.messenger)c.push(`<div class="cc"><b>💙 Messenger</b><p>Facebook-এ মেসেজ করুন</p><a class="btn tel" href="${esc(SHOP.messenger)}" target="_blank" rel="noopener">Messenger খুলুন</a></div>`);
 if(SHOP.facebook)c.push(`<div class="cc"><b>👍 Facebook পেজ</b><p>আমাদের পেজ দেখুন</p><a class="btn tel" href="${esc(SHOP.facebook)}" target="_blank" rel="noopener">পেজে যান</a></div>`);
 if(SHOP.email)c.push(`<div class="cc"><b>✉️ ইমেইল</b><p>${esc(SHOP.email)}</p><a class="btn tel" href="mailto:${esc(SHOP.email)}">ইমেইল করুন</a></div>`);
-c.push(`<div class="cc"><b>🕐 সাপোর্টের সময়</b><p>${SHOP.hours[0]}</p></div>`);
-c.push(`<div class="cc"><b>📍 অফিসের ঠিকানা</b><p>${esc(SHOP.address)}</p>${SHOP.map?`<a class="btn tel" href="${esc(SHOP.map)}" target="_blank" rel="noopener">ম্যাপে দেখুন</a>`:""}</div>`);
+if(SHOP.hours[0])c.push(`<div class="cc"><b>🕐 সাপোর্টের সময়</b><p>${SHOP.hours[0]}</p></div>`);
+if(SHOP.address)c.push(`<div class="cc"><b>📍 অফিসের ঠিকানা</b><p>${esc(SHOP.address)}</p>${SHOP.map?`<a class="btn tel" href="${esc(SHOP.map)}" target="_blank" rel="noopener">ম্যাপে দেখুন</a>`:""}</div>`);
 document.getElementById("cg").innerHTML=c.join("");
 </script></body></html>
