@@ -5,12 +5,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css"></head>
 <body><main class="wrap co-wrap" id="co"><p class="sub" style="margin-top:28px">লোড হচ্ছে...</p></main>
-<script src="js/app.js"></script><script src="js/shop.js"></script>
+<script src="js/app.js"></script><script src="js/shop.js"></script><script src="js/extras.js"></script>
 <script>
 (async()=>{
   const root=document.getElementById("co"),id=new URLSearchParams(location.search).get("id");
   let p;try{p=(await loadAll()).find(x=>String(x.id)===String(id))}catch(e){}
   if(!p){root.innerHTML='<div class="empty" style="margin-top:28px">প্রোডাক্টটি পাওয়া যায়নি। <a href="index.html">হোমে ফিরে যান</a></div>';return}
+  if(isSoldOut(p)){root.innerHTML='<div class="empty" style="margin-top:28px">'+esc(p.name)+' — স্টক শেষ হয়ে গেছে। <a href="index.html">অন্য পণ্য দেখুন</a></div>';return}
   const c=cover(p);
   root.innerHTML=`<a class="back" href="product.html?id=${encodeURIComponent(p.id)}">← ফিরে যান</a><h1 style="font-size:1.7rem">অর্ডার সম্পন্ন করুন</h1>
   <form class="box" id="f">
@@ -22,6 +23,7 @@
    <label>জেলা<select name="district" required><option value="">জেলা নির্বাচন করুন</option>${DISTRICTS.map(d=>`<option>${d}</option>`).join("")}</select></label>
    <label>সম্পূর্ণ ঠিকানা<textarea name="address" rows="3" required maxlength="300" placeholder="আপনার ডেলিভারি ঠিকানা" autocomplete="street-address"></textarea></label>
    <fieldset class="dv"><legend>ডেলিভারি</legend>${Object.entries(DELIVERY).map(([k,v])=>`<label class="rd"><input type="radio" name="delivery" value="${k}" ${k==="out"?"checked":""}><span>${v.label}</span><b>${tk(v.fee)}</b></label>`).join("")}</fieldset>
+   <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0">
    <div class="tot" id="tot"></div>
    <button class="btn gold big" id="go" type="submit">🛒 অর্ডার কনফার্ম করুন</button><p class="msg" id="msg" role="status"></p>
   </form>`;
@@ -41,6 +43,7 @@
       root.innerHTML=`<div class="ok"><div class="tick">✓</div><h1 style="font-size:1.6rem">অর্ডার সফল হয়েছে!</h1><p>ধন্যবাদ আপনার অর্ডারের জন্য ❤️</p>
       <p>অর্ডার নম্বর: <b>${esc(r.orderId)}</b></p><p>${esc(p.name)}<br>মোট: <b>${tk(r.total)}</b></p>
       <p style="color:var(--muted)">আপনার অর্ডারটি আমরা পেয়েছি। আমাদের প্রতিনিধি আপনার দেওয়া মোবাইল নম্বরে যোগাযোগ করবেন।</p>
+      <p><a class="btn alt2" href="track.html?o=${encodeURIComponent(r.orderId)}">অর্ডার ট্র্যাক করুন</a></p>
       <a class="btn gold" href="index.html">🏠 হোমে ফিরে যান</a></div>`;
       window.scrollTo(0,0);
     }catch(err){go.disabled=false;msg.style.color="#ff7b6b";msg.textContent=err.message||"সমস্যা হয়েছে, আবার চেষ্টা করুন।"}
