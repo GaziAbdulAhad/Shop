@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin"><meta name="theme-color" content="#100B14">
+<title>অর্ডার ট্র্যাক | আমার দোকান</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head>
+<body><main class="wrap co-wrap">
+<h1 style="font-size:1.7rem;margin-top:28px">অর্ডার ট্র্যাক করুন</h1>
+<p class="sub" style="text-align:left;margin-bottom:16px">অর্ডার নম্বর ও অর্ডারের মোবাইল নম্বর দিয়ে আপনার অর্ডারের অবস্থা দেখুন।</p>
+<form class="box" id="f">
+<label>অর্ডার নম্বর<input name="orderId" required placeholder="ORD-..." autocomplete="off"></label>
+<label>অর্ডারের মোবাইল নম্বর<input name="phone" type="tel" inputmode="numeric" required placeholder="01XXXXXXXXX"></label>
+<button class="btn gold big" id="go" type="submit">অবস্থা দেখুন</button><p class="msg" id="msg" role="status"></p>
+</form><div id="res"></div></main>
+<script src="js/app.js"></script><script src="js/shop.js"></script><script src="js/extras.js"></script>
+<script>
+const f=document.getElementById("f"),msg=document.getElementById("msg"),res=document.getElementById("res");
+const o=new URLSearchParams(location.search).get("o");if(o)f.orderId.value=o;
+const STEP={"নতুন":1,"যোগাযোগ হয়েছে":1,"কনফার্মড":2,"প্রসেসিং":2,"শিপড":3,"ডেলিভারড":4};
+const NAMES=[["📝","অর্ডার গৃহীত"],["✅","কনফার্মড ও প্যাকিং"],["🚚","কুরিয়ারে"],["🏠","দোরগোড়ায় পৌঁছেছে"]];
+f.addEventListener("submit",async e=>{
+  e.preventDefault();res.innerHTML="";
+  const go=document.getElementById("go");go.disabled=true;msg.style.color="";msg.textContent="খোঁজা হচ্ছে...";
+  try{
+    const r=await api({action:"track",track:{orderId:f.orderId.value.trim(),phone:f.phone.value.replace(/[\s-]/g,"")}});
+    if(!r.ok)throw new Error(r.error||"পাওয়া যায়নি");
+    msg.textContent="";const st=STEP[r.status]||0,cancelled=r.status==="বাতিল";
+    res.innerHTML=`<div class="box" style="margin-top:6px"><div><b>${esc(f.orderId.value.trim())}</b><br><span style="color:var(--muted)">${esc(r.time)} · ${esc(r.district||"")}</span></div>
+      <p style="margin:0">${esc(r.product)}</p><p style="margin:0">মোট: <b>${tk(r.total)}</b></p>
+      ${cancelled?`<div class="demo">এই অর্ডারটি বাতিল করা হয়েছে। প্রশ্ন থাকলে <a href="contact.html">যোগাযোগ করুন</a>।</div>`
+      :`<div class="tsteps">${NAMES.map((n,i)=>`<div class="tstep${i<st?" on":""}${i===st-1?" cur":""}"><i>${n[0]}</i>${n[1]}</div>`).join("")}</div><p style="margin:0;text-align:center">বর্তমান অবস্থা: <b>${esc(r.status)}</b></p>`}</div>`;
+  }catch(err){msg.style.color="#ff7b6b";msg.textContent=err.message||"সমস্যা হয়েছে, আবার চেষ্টা করুন।"}
+  finally{go.disabled=false}
+});
+</script></body></html>
