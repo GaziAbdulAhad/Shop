@@ -5,21 +5,34 @@
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css"></head>
 <body class="has-cta"><main class="wrap" id="pd"><p class="sub" style="margin-top:28px">লোড হচ্ছে...</p></main>
-<script src="js/app.js"></script><script src="js/policies.js"></script><script src="js/shop.js"></script>
+<script src="js/app.js"></script><script src="js/policies.js"></script><script src="js/shop.js"></script><script src="js/extras.js"></script>
 <script>
 (async()=>{
   const root=document.getElementById("pd"),id=new URLSearchParams(location.search).get("id");
-  let p;try{p=(await loadAll()).find(x=>String(x.id)===String(id))}catch(e){}
+  let all=[],p;try{all=await loadAll();p=all.find(x=>String(x.id)===String(id))}catch(e){}
   if(!p){root.innerHTML='<div class="empty" style="margin-top:28px">প্রোডাক্টটি পাওয়া যায়নি। <a href="index.html">হোমে ফিরে যান</a></div>';return}
   document.title=p.name+" | "+SHOP_NAME;
-  const lines=String(p.desc||"").split(/\n+/).map(x=>x.trim()).filter(Boolean),order="order.html?id="+encodeURIComponent(p.id);
+  const order="order.html?id="+encodeURIComponent(p.id),so=isSoldOut(p);
+  /* বিবরণ পরিষ্কার: হ্যাশট্যাগ আলাদা ট্যাগে, "DM করুন" ধরনের লাইন বাদ */
+  const lines=[],tags=[];
+  String(p.desc||"").split(/\n+/).map(x=>x.trim()).filter(Boolean).forEach(l=>{
+    tags.push(...(l.match(/#[^\s#]+/g)||[]));
+    const t=l.replace(/#[^\s#]+/g,"").trim();
+    if(!t||/\bdm\b/i.test(t)||/ইনবক্স|inbox/i.test(t))return;
+    lines.push(t);
+  });
+  const d=off(p),save=Number(p.oldprice)-Number(p.price);
+  const pbox=`<div class="pbox"><div class="pbig"><b>${tk(p.price)}</b>${d?`<s>${tk(p.oldprice)}</s><span class="off">${d}% OFF</span>`:""}</div>${d?`<div class="psave">আপনি বাঁচাচ্ছেন ${tk(save)}</div>`:""}</div>`;
+  const same=all.filter(x=>String(x.id)!==String(p.id)&&p.category&&x.category===p.category),rest=all.filter(x=>String(x.id)!==String(p.id)&&!same.includes(x));
+  const more=[...same,...rest].slice(0,4);
   root.innerHTML=`<a class="back" href="index.html">← সব প্রোডাক্ট</a>
-  <div class="pd"><div class="card" id="gal"></div><div class="info"><h1>${esc(p.name)}</h1>${ratingHTML(p)}${priceHTML(p)}
-  <ul class="trust">${TRUST.slice(0,3).map(t=>`<li>✓ ${t[1]}</li>`).join("")}</ul>
-  <a class="btn gold big" href="${order}">এখনই অর্ডার করুন</a>${contactBtns()}${quickAcc()}</div></div>
-  ${lines.length?`<section class="det"><h2 class="sec">প্রোডাক্ট ডিটেইলস</h2><ul class="dl">${lines.map(l=>`<li>${esc(l)}</li>`).join("")}</ul></section>`:""}
+  <div class="pd"><div id="gal"></div><div class="info"><h1>${esc(p.name)}</h1>${ratingHTML(p)}${pbox}
+  <div class="tcards">${TRUST.slice(0,3).map(t=>`<div><span>${t[0]}</span>${t[1]}</div>`).join("")}</div>
+  ${so?`<span class="btn gold big dis">স্টক শেষ</span>`:`<a class="btn gold big" href="${order}">এখনই অর্ডার করুন</a><button class="btn big cart2" type="button" data-cart="${esc(p.id)}">${CART_SVG} কার্টে যোগ করুন</button>`}${contactBtns()}${quickAcc()}</div></div>
+  ${lines.length?`<section class="det"><h2 class="sec">প্রোডাক্ট ডিটেইলস</h2><ul class="feat">${lines.map(l=>`<li>${esc(l)}</li>`).join("")}</ul>${tags.length?`<div class="tags">${[...new Set(tags)].map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}</section>`:""}
   <section id="vid"></section><section id="rv"></section>
-  <div class="sticky-cta"><span>${tk(p.price)}</span><a class="btn gold" href="${order}">এখনই অর্ডার করুন</a></div>`;
+  ${more.length?`<section class="more"><h2 class="sec">আরও দেখুন</h2><div class="grid">${more.map(x=>cardHTML(x,false)).join("")}</div></section>`:""}
+  <div class="sticky-cta"><span>${tk(p.price)}</span>${so?`<span class="btn gold dis">স্টক শেষ</span>`:`<a class="btn gold" href="${order}">এখনই অর্ডার করুন</a>`}</div>`;
   initGallery(document.getElementById("gal"),{...p,video:""});
   videoBlock(document.getElementById("vid"),p);
   getReviews(p.id).then(l=>{document.getElementById("rv").innerHTML=`<h2 class="sec">কাস্টমার রিভিউ</h2>`+(l.length?l.map(r=>`<div class="rev"><div>${stars(r.rating)} <b>${esc(r.name)}</b> ${r.verified?'<span class="vf">✓ Verified Purchase</span>':""}</div>${r.text?`<p>${esc(r.text)}</p>`:""}${r.photo?`<a href="${esc(imgURL(r.photo,1400))}" target="_blank" rel="noopener"><img class="rph" src="${esc(imgURL(r.photo,400))}" alt="ক্রেতার ছবি" loading="lazy" onerror="imgFail(this)"></a>`:""}</div>`).join(""):`<p class="hint" style="margin:0 0 8px">এখনও কোনো রিভিউ নেই।</p>`)+`<p class="hint" style="margin:8px 0">ডেলিভারি পাওয়া ক্রেতারা <a href="review.html">রিভিউ লিখুন</a></p>`}).catch(()=>{});
