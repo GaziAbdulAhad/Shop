@@ -28,7 +28,7 @@
   root.innerHTML=`<a class="back" href="index.html">← সব প্রোডাক্ট</a>
   <div class="pd"><div id="gal"></div><div class="info"><h1>${esc(p.name)}</h1>${ratingHTML(p)}${pbox}
   <div class="tcards">${TRUST.slice(0,3).map(t=>`<div><span>${t[0]}</span>${t[1]}</div>`).join("")}</div>
-  ${so?`<span class="btn gold big dis">স্টক শেষ</span>`:`<a class="btn gold big" href="${order}">এখনই অর্ডার করুন</a><button class="btn big cart2" type="button" data-cart="${esc(p.id)}">${CART_SVG} কার্টে যোগ করুন</button>`}${contactBtns()}${quickAcc()}</div></div>
+  ${so?`<span class="btn gold big dis">স্টক শেষ</span>`+notifyHTML(p.id):`<a class="btn gold big" href="${order}">এখনই অর্ডার করুন</a><button class="btn big cart2" type="button" data-cart="${esc(p.id)}">${CART_SVG} কার্টে যোগ করুন</button>`}${contactBtns()}${quickAcc()}</div></div>
   ${lines.length?`<section class="det"><h2 class="sec">প্রোডাক্ট ডিটেইলস</h2><ul class="feat">${lines.map(l=>`<li>${esc(l)}</li>`).join("")}</ul>${tags.length?`<div class="tags">${[...new Set(tags)].map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}</section>`:""}
   <section id="vid"></section><section id="rv"></section>
   ${more.length?`<section class="more"><h2 class="sec">আরও দেখুন</h2><div class="grid">${more.map(x=>cardHTML(x,false)).join("")}</div></section>`:""}
