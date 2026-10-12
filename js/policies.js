@@ -393,7 +393,12 @@ We do not use your personal information unnecessarily for purposes unrelated to 
 • সম্পূর্ণ ডেলিভারি ঠিকানা
 • অর্ডারের তথ্য, যেমন পণ্যের নাম, পরিমাণ ও মূল্য
 • অর্ডার ও যোগাযোগের সঙ্গে সম্পর্কিত প্রয়োজনীয় তথ্য
-আমাদের ওয়েবসাইট ব্যবহারের সময় কিছু সাধারণ browsing information, যেমন কোন পেজ ভিজিট করা হয়েছে বা session-related information, স্বয়ংক্রিয়ভাবে সংগ্রহ হতে পারে। এসব তথ্য মূলত ওয়েবসাইটের কার্যকারিতা ও ব্যবহারকারীর অভিজ্ঞতা উন্নত করতে ব্যবহার করা হয়।
+আমাদের ওয়েবসাইট ব্যবহারের সময় নাম-পরিচয় ছাড়া কিছু সাধারণ ব্যবহারের তথ্য স্বয়ংক্রিয়ভাবে গোনা হয়:
+• কোন পেজ বা পণ্য দেখা হলো, পণ্য কার্টে যোগ হলো কি না, অর্ডার ফর্ম খোলা হলো কি না, WhatsApp বা Messenger বোতামে চাপ পড়ল কি না
+• আপনার ব্রাউজারে রাখা একটি এলোমেলো কোড, যা দিয়ে একই ডিভাইসের ভিজিট একবার গোনা যায়। এই কোডে আপনার নাম, মোবাইল নম্বর বা IP ঠিকানা থাকে না
+• কোন লিংক (যেমন পোস্ট বা লাইভ) থেকে আপনি এসেছেন
+এসব তথ্য আপনার নাম বা মোবাইল নম্বরের সাথে যুক্ত করা হয় না। এগুলো মূলত ওয়েবসাইটের কার্যকারিতা ও ব্যবহারকারীর অভিজ্ঞতা উন্নত করতে ব্যবহার করা হয়।
+আপনি নিজে ওয়েবসাইটের "নতুন পণ্য ও অফারের খবর" ফর্মে, অথবা অর্ডারের সময় সম্মতির বাক্সে টিক দিয়ে মোবাইল নম্বর দিলে, সেই নম্বর নতুন পণ্য ও অফারের খবর পাঠানোর জন্য সংরক্ষণ করা হয়। ওই একই ফর্মে আপনি আলাদাভাবে সম্মতি দিলে (টিকবাক্সে টিক দিলে) আপনার দেখা পণ্যের তথ্য আপনার নম্বর বা অর্ডারের সাথে যুক্ত করা হয়, যাতে আপনার পছন্দের পণ্য জানানো যায়। টিক না দিলে এমন কোনো যোগ করা হয় না।
 [en]
 To receive, confirm, and deliver your orders, we may collect the following information when necessary:
 • Full name
@@ -401,7 +406,12 @@ To receive, confirm, and deliver your orders, we may collect the following infor
 • Complete delivery address
 • Order details, such as product name, quantity, and price
 • Relevant information related to your order or communication with us
-When you use our website, some general browsing information, such as pages visited and session-related information, may also be collected automatically. This information is mainly used to improve website performance and user experience.
+When you use our website, some general usage information is counted automatically, without your name or identity:
+• Which pages or products were viewed, whether a product was added to the cart, whether the order form was opened, and whether the WhatsApp or Messenger buttons were clicked
+• A random code stored in your browser, used to count visits from the same device once. This code does not contain your name, mobile number, or IP address
+• Which link (for example, a post or a live session) you arrived from
+This information is not linked to your name or mobile number. It is mainly used to improve website performance and user experience.
+If you voluntarily enter your mobile number in the "new products and offers" form on our website, or tick the consent box when ordering, we store that number so that we can send you news of new products and offers. If you separately consent in the same form (by ticking the checkbox), the products you viewed are linked to your number or order so that we can suggest products you may like. If you do not tick it, no such link is made.
 
 --- 🎯 আপনার তথ্য কীভাবে ব্যবহার করি | How We Use Your Information
 [bn]
@@ -413,7 +423,7 @@ When you use our website, some general browsing information, such as pages visit
 • রিটার্ন বা এক্সচেঞ্জ সংক্রান্ত সেবা দিতে
 • অর্ডার ও প্রয়োজনীয় আপডেট জানাতে
 • ওয়েবসাইটের পারফরম্যান্স ও ব্যবহারকারীর অভিজ্ঞতা উন্নত করতে
-• আপনার অনুমতি বা প্রযোজ্য ব্যবস্থার অধীনে অফার, প্রচারণা বা অন্যান্য আপডেট জানাতে
+• যারা নিজে সম্মতি দিয়েছেন (ফর্মে নম্বর দিয়ে বা অর্ডারের সময় টিক দিয়ে) তাদের এবং আগের ক্রেতাদের নতুন পণ্য ও অফারের খবর জানাতে। আপনি বন্ধ করতে বললে আর পাঠানো হয় না
 আমরা আপনার ব্যক্তিগত তথ্য এমন কোনো উদ্দেশ্যে ব্যবহার করার চেষ্টা করি না, যা এই Privacy Policy-তে বর্ণিত ব্যবহারের সঙ্গে অসঙ্গতিপূর্ণ।
 [en]
 Your information may be used when necessary to:
@@ -424,7 +434,7 @@ Your information may be used when necessary to:
 • Provide return or exchange support
 • Send order-related and necessary updates
 • Improve website performance and user experience
-• Send offers, promotions, or other updates where you have permitted or where applicable
+• Send news of new products and offers to those who have given consent (through the form or the order-time tick box) and to previous customers. If you ask us to stop, we stop
 We do not intentionally use your personal information for purposes that are inconsistent with the uses described in this Privacy Policy.
 
 --- 🤝 কার সঙ্গে আপনার তথ্য শেয়ার করা হতে পারে | Information Sharing
@@ -454,14 +464,16 @@ We do not sell your personal information and do not unnecessarily provide it to 
 --- 🍪 Cookies ও Tracking | Cookies & Tracking
 [bn]
 আমাদের ওয়েবসাইটের কার্যকারিতা, নিরাপত্তা, ব্যবহারকারীর অভিজ্ঞতা এবং বিজ্ঞাপনের কার্যকারিতা বোঝার জন্য কিছু cookies বা tracking technologies ব্যবহার করা হতে পারে।
-বর্তমানে ব্যবহৃত বা ব্যবহারের উদ্দেশ্য হতে পারে:
+আমাদের নিজস্ব ভিজিট গণনার জন্য আপনার ব্রাউজারের local storage-এ একটি এলোমেলো কোড রাখা হয়। ওয়েবসাইটে প্রথমবার ঢুকলে একটি নোটিশ দেখানো হয়; সেখানে "গুনবেন না" বেছে নিলে এই গণনা আপনার জন্য বন্ধ থাকে। ব্রাউজারের ডেটা মুছে দিলেও কোডটি মুছে যায়।
+এছাড়া বর্তমানে ব্যবহৃত বা ব্যবহারের উদ্দেশ্য হতে পারে:
 • Meta Pixel: Facebook/Meta বিজ্ঞাপনের কার্যকারিতা ও conversion পরিমাপ করতে
 • Google Analytics: ওয়েবসাইটের traffic এবং ব্যবহারকারীরা কীভাবে ওয়েবসাইট ব্যবহার করছেন তা বুঝতে
 • Web Vitals: ওয়েবসাইটের loading ও performance পর্যবেক্ষণ করতে
 এই প্রযুক্তিগুলোর মাধ্যমে সংগৃহীত তথ্য মূলত আমাদের ওয়েবসাইট ও marketing কার্যক্রম উন্নত করার কাজে ব্যবহার করা হয়।
 [en]
 Our website may use cookies and similar tracking technologies to understand website performance, user experience, security, and advertising effectiveness.
-These may include:
+For our own visit counting, a random code is stored in your browser's local storage. A notice is shown when you first visit the website; if you choose "Do not count", this counting stays off for you. Clearing your browser data also removes the code.
+In addition, the following may be used:
 • Meta Pixel: To measure the effectiveness and conversions of Facebook/Meta advertising
 • Google Analytics: To understand website traffic and how visitors use our website
 • Web Vitals: To monitor website loading and performance
@@ -476,6 +488,7 @@ Information collected through these technologies is mainly used to improve our w
 • Access control
 • অনুমোদিত ব্যক্তিদের মাধ্যমে তথ্য ব্যবস্থাপনা
 আপনার তথ্যের প্রয়োজনীয়তা শেষ হলে বা ব্যবসায়িক প্রয়োজন অনুযায়ী যতদিন রাখা দরকার না হলে, তা মুছে ফেলা বা সংরক্ষণ না করার ব্যবস্থা নেওয়া হতে পারে।
+ভিজিট গণনার তথ্য কয়েক মাস রাখা হয়, তারপর পুরনো অংশ মুছে যায়।
 তবে ইন্টারনেটের মাধ্যমে কোনো তথ্য আদান-প্রদান বা সংরক্ষণ ব্যবস্থা শতভাগ নিরাপদ থাকার নিশ্চয়তা দেওয়া সম্ভব নয়।
 [en]
 We use appropriate security measures to help protect your information.
@@ -485,6 +498,7 @@ These may include:
 • Access controls
 • Restricting data access to authorized personnel
 When information is no longer needed or required to be retained for legitimate business purposes, we may delete or stop retaining it where appropriate.
+Visit-count data is kept for a few months, after which older records are deleted.
 However, no method of transmitting or storing information over the internet can be guaranteed to be completely secure.
 
 --- ✅ আপনার অধিকার | Your Rights
@@ -492,14 +506,16 @@ However, no method of transmitting or storing information over the internet can 
 আপনার ব্যক্তিগত তথ্য সম্পর্কে আপনার কিছু অধিকার রয়েছে। প্রয়োজন হলে আপনি:
 • আপনার তথ্য সংশোধন বা আপডেট করার অনুরোধ করতে পারেন
 • আপনার সংরক্ষিত তথ্য সম্পর্কে জানতে চাইতে পারেন
-• মার্কেটিং SMS বা Push Notification বন্ধ করার অনুরোধ করতে পারেন
+• মার্কেটিং SMS, WhatsApp মেসেজ বা Push Notification বন্ধ করার অনুরোধ করতে পারেন (WhatsApp-এ জানালেই হবে)
+• ভিজিট গণনা বন্ধ করতে নোটিশে "গুনবেন না" বেছে নিতে বা ব্রাউজারের ডেটা মুছে দিতে পারেন
 • নির্দিষ্ট পরিস্থিতিতে আপনার ব্যক্তিগত তথ্য মুছে ফেলার অনুরোধ করতে পারেন
 তথ্য মুছে ফেলার অনুরোধ করলেও আইনগত, হিসাবরক্ষণ বা প্রয়োজনীয় ব্যবসায়িক কারণে কিছু তথ্য নির্দিষ্ট সময় পর্যন্ত সংরক্ষণ করার প্রয়োজন হতে পারে।
 [en]
 You have certain rights regarding your personal information. Where applicable, you may:
 • Request correction or updating of your information
 • Ask what personal information we have stored about you
-• Request to stop receiving marketing SMS or Push Notifications
+• Request to stop receiving marketing SMS, WhatsApp messages, or Push Notifications (just message us on WhatsApp)
+• Stop visit counting by choosing "Do not count" in the notice, or by clearing your browser data
 • Request deletion of your personal information in certain circumstances
 Even after a deletion request, some information may need to be retained for a certain period for legal, accounting, or legitimate business purposes.
 
