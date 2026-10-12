@@ -27,6 +27,7 @@
    <label>জেলা<select name="district" required><option value="">জেলা নির্বাচন করুন</option>${DISTRICTS.map(d=>`<option>${d}</option>`).join("")}</select></label>
    <label>সম্পূর্ণ ঠিকানা<textarea name="address" rows="3" required maxlength="300" placeholder="আপনার ডেলিভারি ঠিকানা" autocomplete="street-address"></textarea></label>
    <fieldset class="dv"><legend>ডেলিভারি</legend>${Object.entries(DELIVERY).map(([k,v])=>`<label class="rd"><input type="radio" name="delivery" value="${k}" ${k==="out"?"checked":""}><span>${v.label}</span><b>${tk(v.fee)}</b></label>`).join("")}</fieldset>
+   <label class="rd" style="font-weight:400"><input type="checkbox" name="marketing" value="1"><span>নতুন পণ্য ও অফারের খবর মেসেজে পেতে চাই। আমার দেখা পণ্যের তথ্য আমার অর্ডারের সাথে যুক্ত থাকতে পারে, যাতে পছন্দের পণ্য জানানো যায়।</span></label>
    <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0">
    <div class="tot" id="tot"></div>
    <button class="btn gold big" id="go" type="submit">🛒 অর্ডার কনফার্ম করুন</button><p class="msg" id="msg" role="status"></p>
@@ -50,8 +51,10 @@
     if(!/^01[3-9]\d{8}$/.test(d.phone)){msg.style.color="#ff7b6b";msg.textContent="মোবাইল নম্বর ১১ ডিজিটের হতে হবে (01XXXXXXXXX)।";return}
     const go=document.getElementById("go");go.disabled=true;msg.style.color="";msg.textContent="অর্ডার পাঠানো হচ্ছে...";
     try{
-      const r=await api({action:"order",order:{items:cartGet().map(x=>({productId:x.id,qty:x.qty})),src:getSrc(),...d}});
+      const r=await api({action:"order",order:{items:cartGet().map(x=>({productId:x.id,qty:x.qty})),src:getSrc(),vid:d.marketing?getVid():"",...d}});
       if(!r.ok)throw new Error(r.error||"অর্ডার হয়নি");
+      if(d.marketing)api({action:"subscribe",sub:{phone:d.phone,name:d.name,src:"order",vid:getVid()}}).catch(()=>{});
+      try{shopPurchase(r.orderId,r.total,cartGet().map(x=>x.id))}catch(e){}
       cartSet([]);
       root.innerHTML=`<div class="ok"><div class="tick">✓</div><h1 style="font-size:1.6rem">অর্ডার সফল হয়েছে!</h1><p>ধন্যবাদ আপনার অর্ডারের জন্য ❤️</p>
       <p>অর্ডার নম্বর: <b>${esc(r.orderId)}</b></p><p>মোট: <b>${tk(r.total)}</b></p>
