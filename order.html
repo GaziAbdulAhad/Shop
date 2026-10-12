@@ -38,7 +38,7 @@
     if(!/^01[3-9]\d{8}$/.test(d.phone)){msg.style.color="#ff7b6b";msg.textContent="মোবাইল নম্বর ১১ ডিজিটের হতে হবে (01XXXXXXXXX)।";return}
     const go=document.getElementById("go");go.disabled=true;msg.style.color="";msg.textContent="অর্ডার পাঠানো হচ্ছে...";
     try{
-      const r=await api({action:"order",order:{productId:p.id,...d}});
+      const r=await api({action:"order",order:{productId:p.id,src:getSrc(),...d}});
       if(!r.ok)throw new Error(r.error||"অর্ডার হয়নি");
       root.innerHTML=`<div class="ok"><div class="tick">✓</div><h1 style="font-size:1.6rem">অর্ডার সফল হয়েছে!</h1><p>ধন্যবাদ আপনার অর্ডারের জন্য ❤️</p>
       <p>অর্ডার নম্বর: <b>${esc(r.orderId)}</b></p><p>${esc(p.name)}<br>মোট: <b>${tk(r.total)}</b></p>
