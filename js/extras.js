@@ -1,3 +1,6 @@
+/* ?src=live1 জাতীয় ট্যাগ মনে রাখে, অর্ডারের সাথে পাঠাতে */
+(function(){try{const s=new URLSearchParams(location.search).get("src");if(s)sessionStorage.setItem("shop_src",s.replace(/[^\w-]/g,"").slice(0,30))}catch(e){}})();
+function getSrc(){try{return sessionStorage.getItem("shop_src")||""}catch(e){return ""}}
 /* শুধু ক্রেতাদের পেজে: ট্রাস্ট বার, ভাসমান কার্ট, ফুটারে অর্ডার ট্র্যাক */
 const CART_KEY="shop_cart_v1";
 function cartGet(){try{return JSON.parse(localStorage.getItem(CART_KEY))||[]}catch(e){return[]}}
