@@ -412,6 +412,7 @@ const MEHER = (() => {
         <a href="policy.html" data-i18n="nav_policy">পলিসি</a>
         <a href="faq.html" data-i18n="nav_faq">প্রশ্নোত্তর</a>
         <a href="contact.html" data-i18n="nav_contact">যোগাযোগ</a>
+        <a href="about.html" data-i18n="f_about">আমাদের সম্পর্কে</a>
       </div>
     </div>`;
   }
@@ -436,6 +437,7 @@ const MEHER = (() => {
             <li><a href="track.html" data-i18n="f_track">অর্ডার ট্র্যাক</a></li>
           </ul></nav>
           <nav aria-label="Help"><h4 data-i18n="footer_help">সাহায্য</h4><ul>
+            <li><a href="about.html" data-i18n="f_about">আমাদের সম্পর্কে</a></li>
             <li><a href="shipping-policy.html" data-i18n="f_deliv_pay">ডেলিভারি ও পেমেন্ট</a></li>
             <li><a href="return-policy.html" data-i18n="f_return_ex">রিটার্ন ও এক্সচেঞ্জ</a></li>
             <li><a href="policy.html#cancellation" data-i18n="f_cancel">অর্ডার ক্যানসেলেশন</a></li>
