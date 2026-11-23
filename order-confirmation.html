@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>অর্ডার সফল হয়েছে — ARIFAH (আরিফাহ)</title>
+<meta name="description" content="আপনার অর্ডার আমরা পেয়েছি — আমাদের প্রতিনিধি কল করে কনফার্ম করবেন।">
+<meta name="robots" content="noindex"><meta name="theme-color" content="#352344">
+<link rel="icon" type="image/svg+xml" href="assets/img/placeholder.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+
+<!-- Meta Pixel (initialized from MEHER_CONFIG.metaPixelId) -->
+<script>
+const CFG = window.MEHER_CONFIG;
+if (CFG.metaPixelId) {
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', CFG.metaPixelId);
+  fbq('track', 'PageView');
+  // noscript fallback
+  const noscript = document.getElementById('fb-noscript');
+  if (noscript) noscript.src = 'https://www.facebook.com/tr?id=' + CFG.metaPixelId + '&ev=PageView&noscript=1';
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" id="fb-noscript" /></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main"><span data-i18n="skip_to_content">Skip to content</span></a>
+<div id="site-header"></div>
+
+<main id="main" class="container" style="padding:var(--sp-7) 0">
+  <div class="card card-pad" style="max-width:620px;margin:0 auto;text-align:center">
+    <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true" style="margin:0 auto .5rem">
+      <circle cx="36" cy="36" r="33" stroke="#2E7D4F" stroke-width="4" opacity="0.3"/>
+      <path d="M23 37.5 33 47 52 27" stroke="#2E7D4F" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h1 style="font-family:var(--font-display);color:var(--purple);font-size:var(--fs-2xl)" data-i18n="conf_h1">অর্ডার সফল হয়েছে!</h1>
+    <p class="text-muted" style="margin:.4rem 0 1rem" data-i18n-html="conf_p_html">ধন্যবাদ আপনার অর্ডারের জন্য ❤️<br>আমাদের প্রতিনিধি আপনার নম্বরে কল করে কনফার্ম করবেন।</p>
+
+    <div class="card" style="background:var(--ivory);padding:.9rem;display:inline-flex;flex-direction:column;gap:.2rem;min-width:260px">
+      <span class="hint" data-i18n="conf_order_id">অর্ডার নম্বর</span>
+      <strong id="confirmOrderId" style="font-size:1.35rem;color:var(--purple);letter-spacing:.05em">…</strong>
+    </div>
+    <p style="margin-top:.75rem"><span data-i18n="conf_total_l">মোট:</span> <b id="confirmTotal" style="color:var(--purple)">…</b><span data-i18n="conf_cod"> টাকা · ক্যাশ অন ডেলিভারি</span></p>
+    <p id="confirmAddress" class="hint" style="margin-top:.35rem"></p>
+
+    <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-top:1.1rem">
+      <a class="btn btn-outline" id="trackLink" href="track.html"><span data-i18n="conf_track">অর্ডার ট্র্যাক করুন</span></a>
+      <a class="btn btn-primary" href="index.html"><span data-i18n="conf_home">হোমে ফিরে যান</span></a>
+    </div>
+    <p class="hint" style="margin-top:1rem" data-i18n="conf_note">অর্ডার নম্বরটি লিখে রাখুন — ট্র্যাক করতে লাগবে।</p>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+'use strict';
+const U = window.MEHER_UTIL;
+const CFG = window.MEHER_CONFIG;
+function renderConfirmation() {
+  const order = MEHER.getLastOrder();
+  const idEl = document.getElementById('confirmOrderId');
+  if (!order) {
+    idEl.textContent = '—';
+    document.getElementById('confirmTotal').textContent = '—';
+    document.getElementById('confirmAddress').textContent = MEHER.t('conf_notfound');
+  } else {
+    idEl.textContent = order.orderId || '—';
+    document.getElementById('confirmTotal').textContent = U.money(order.total || 0);
+    document.getElementById('confirmAddress').textContent = `${order.name} · ${order.phone} · ${order.address || ''}${order.district ? ', ' + order.district : ''}`;
+    document.getElementById('trackLink').href = `track.html?o=${encodeURIComponent(order.orderId || '')}&phone=${encodeURIComponent(order.phone || '')}`;
+
+    // Meta Pixel Purchase event
+    if (CFG.metaPixelId && typeof fbq === 'function') {
+      fbq('track', 'Purchase', {
+        value: Number(order.total || 0),
+        currency: 'BDT',
+        content_type: 'product',
+        content_ids: [order.orderId],
+        num_items: order.qty || 1
+      });
+    }
+  }
+}
+renderConfirmation();
+window.addEventListener('meher:lang-changed', renderConfirmation);
+</script>
+</body>
+</html>

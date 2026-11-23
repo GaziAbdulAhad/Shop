@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>অর্ডার কনফার্ম করুন — ARIFAH (আরিফাহ)</title>
+<meta name="description" content="ARIFAH অর্ডার — ক্যাশ অন ডেলিভারি। পণ্য হাতে পেয়ে পরিশোধ করুন, আগে কিছু দিতে হবে না।">
+<meta name="robots" content="noindex"><meta name="theme-color" content="#352344">
+<link rel="icon" type="image/svg+xml" href="assets/img/placeholder.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main"><span data-i18n="skip_to_content">Skip to content</span></a>
+<div id="site-header"></div>
+
+<main id="main" class="container">
+  <div class="page-head" style="padding-bottom:var(--sp-4)">
+    <span class="eyebrow" data-i18n="co_eyebrow">ক্যাশ অন ডেলিভারি — আগে কিছু দিতে হবে না</span>
+    <h1 data-i18n="co_h1">অর্ডার কনফার্ম করুন</h1>
+    <p class="text-muted" data-i18n="co_sub">নাম, মোবাইল ও ঠিকানা দিন — অর্ডার করার পর আমাদের প্রতিনিধি কল করে কনফার্ম করবেন।</p>
+  </div>
+
+  <div class="empty-state card" id="checkoutEmpty" hidden>
+    <h2 data-i18n="cart_empty_h">কার্ট খালি</h2>
+    <p class="text-muted" data-i18n="want_shop_first">অর্ডার করার আগে পণ্য কার্টে যোগ করুন।</p>
+    <a class="btn btn-primary" style="margin-top:1rem" href="shop.html" data-i18n="cart_empty_cta">প্রোডাক্ট দেখুন</a>
+  </div>
+
+  <div class="commerce-grid" id="checkoutLayout">
+    <form class="card card-pad" id="checkoutForm" novalidate>
+      <h2 style="font-family:var(--font-display);color:var(--purple);font-size:var(--fs-xl);margin-bottom:1rem" data-i18n="co_form_h">আপনার তথ্য</h2>
+
+      <div class="field">
+        <label for="fName"><span data-i18n="co_name_l">নাম</span> <span class="req">*</span></label>
+        <input class="input" id="fName" name="name" autocomplete="name" required minlength="2" placeholder="আপনার পূর্ণ নাম" data-i18n-ph="co_name_ph">
+        <p class="field-error" id="errName"></p>
+      </div>
+
+      <div class="field">
+        <label for="fPhone"><span data-i18n="co_phone_l">মোবাইল নম্বর</span> <span class="req">*</span></label>
+        <input class="input" id="fPhone" name="phone" type="tel" inputmode="numeric" required maxlength="11" autocomplete="tel-national" placeholder="01XXXXXXXXX">
+        <p class="field-error" id="errPhone"></p>
+      </div>
+
+      <div class="field">
+        <label for="fDistrict"><span data-i18n="co_district_l">জেলা</span> <span class="req">*</span></label>
+        <select class="input" id="fDistrict" name="district" required><option value="" data-i18n="co_district_ph">জেলা নির্বাচন করুন</option></select>
+      </div>
+
+      <div class="field">
+        <label for="fAddress"><span data-i18n="co_address_l">সমগ্র ঠিকানা</span> <span class="req">*</span></label>
+        <textarea class="input" id="fAddress" name="address" rows="2" required minlength="5" placeholder="বাড়ি/রোড/এলাকা/থানা — সম্পূর্ণ ঠিকানা" data-i18n-ph="co_address_ph" autocomplete="street-address"></textarea>
+        <p class="field-error" id="errAddress"></p>
+      </div>
+
+      <fieldset style="margin-top:.25rem">
+        <legend style="font-size:.8rem;font-weight:700;margin-bottom:.4rem"><span data-i18n="co_delivery_l">ডেলিভারি</span> <span class="req">*</span></legend>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem" id="areaCards">
+          <label class="card" style="display:flex;gap:.6rem;padding:.75rem;cursor:pointer;border:2px solid #EDE8ED" data-area-card="in">
+            <input type="radio" name="delivery" value="in" style="margin-top:.2rem;accent-color:var(--purple)">
+            <span><strong data-i18n="co_inside_t">ঢাকার ভেতরে</strong><br><span class="hint" data-i18n="co_inside_d">৳৬০ · ১–২ কর্মদিবস</span></span>
+          </label>
+          <label class="card" style="display:flex;gap:.6rem;padding:.75rem;cursor:pointer;border:2px solid var(--purple);background:var(--dusty-pink-soft)" data-area-card="out">
+            <input type="radio" name="delivery" value="out" checked style="margin-top:.2rem;accent-color:var(--purple)">
+            <span><strong data-i18n="co_outside_t">ঢাকার বাইরে</strong><br><span class="hint" data-i18n="co_outside_d">৳১২০ · ২–৪ কর্মদিবস</span></span>
+          </label>
+        </div>
+      </fieldset>
+
+      <label class="rd" style="display:flex;gap:.5rem;align-items:flex-start;font-weight:400;font-size:.82rem;margin-top:.9rem;color:var(--text-muted)">
+        <input type="checkbox" name="marketing" value="1" style="accent-color:var(--purple);margin-top:.2rem">
+        <span data-i18n="co_marketing">নতুন পণ্য ও অফারের খবর WhatsApp-এ পেতে চাই। আমার দেখা পণ্যের তথ্য আমার অর্ডারের সাথে যুক্ত থাকতে পারে, যাতে পছন্দের পণ্য জানানো যায়।</span>
+      </label>
+      <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0">
+
+      <div class="card" style="background:var(--ivory);padding:.75rem .9rem;margin-top:.5rem">
+        <div class="sum-row"><span data-i18n="co_col_items">পণ্য</span><span id="sumSubtotal">৳0</span></div>
+        <div class="sum-row"><span data-i18n="co_col_shipping">ডেলিভারি</span><span id="sumShipping">৳120</span></div>
+        <div class="sum-row total"><span data-i18n="co_col_total">সর্বমোট</span><span id="sumTotal">৳0</span></div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" id="placeOrderBtn" style="margin-top:1rem;font-size:1.05rem;min-height:52px" data-i18n="co_submit">🛒 অর্ডার কনফার্ম করুন</button>
+      <p class="hint" style="text-align:center;margin-top:.5rem" data-i18n="co_confirm_note">অর্ডার কনফার্ম হলে আমাদের প্রতিনিধি আপনার নম্বরে কল করে নিশ্চিত করবেন।</p>
+    </form>
+
+    <aside class="card card-pad" aria-label="Order summary" style="position:sticky;top:calc(var(--header-h) + 12px)">
+      <h2 style="font-family:var(--font-display);color:var(--purple);font-size:var(--fs-xl);margin-bottom:.5rem" data-i18n="co_summary_h">অর্ডার সামারি</h2>
+      <div id="summaryItems" style="max-height:340px;overflow-y:auto;margin-bottom:.5rem"></div>
+      <p class="hint" data-i18n-html="co_summary_note_html">✓ ক্যাশ অন ডেলিভারি<br>✓ পণ্য না পছন্দ হলে ডেলিভারির সময়ই ফেরত দিতে পারবেন<br>✓ ক্ষতিগ্রস্ত বা ভুল পণ্য ৭ দিনের মধ্যে WhatsApp-এ জানান</p>
+    </aside>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+'use strict';
+const U = window.MEHER_UTIL, CFG = window.MEHER_CONFIG, API = window.MEHER_API;
+const layout = document.getElementById('checkoutLayout');
+const empty = document.getElementById('checkoutEmpty');
+const cart = MEHER.getCart();
+
+document.getElementById('fDistrict').innerHTML =
+  '<option value="">' + MEHER.t('co_district_ph') + '</option>' + window.MEHER_DISTRICTS.map(d => `<option>${d}</option>`).join('');
+
+if (!cart.length) { layout.hidden = true; empty.hidden = false; }
+else {
+  (async () => {
+    await MEHER.loadProducts();
+
+    function renderSummary() {
+      document.getElementById('summaryItems').innerHTML = cart.map(i => {
+        const p = MEHER.lineProduct(i); if (!p) return '';
+        return `<div class="sum-row" style="align-items:center;gap:.5rem"><span style="display:flex;gap:.5rem;align-items:center"><img src="${API.cover(p, 120)}" alt="" width="38" height="46" style="object-fit:cover;border-radius:6px" referrerpolicy="no-referrer" onerror="MEHER_API.imgFail(this)"><span style="font-size:.8rem"><b>${p.name}</b><br><span class="hint">× ${i.qty}</span></span></span><span style="white-space:nowrap">${U.money(Number(p.price) * i.qty)}</span></div>`;
+      }).join('');
+      const delivery = (new FormData(document.getElementById('checkoutForm')).get('delivery')) || 'out';
+      const sub = cart.reduce((s, i) => { const p = MEHER.lineProduct(i); return s + (p ? Number(p.price) * i.qty : 0); }, 0);
+      const ship = delivery === 'in' ? CFG.shipping.insideDhaka : CFG.shipping.outsideDhaka;
+      document.getElementById('sumSubtotal').textContent = U.money(sub);
+      document.getElementById('sumShipping').textContent = U.money(ship);
+      document.getElementById('sumTotal').textContent = U.money(sub + ship);
+      document.querySelectorAll('[data-area-card]').forEach(card => {
+        const active = card.dataset.areaCard === delivery;
+        card.style.borderColor = active ? 'var(--purple)' : '#EDE8ED';
+        card.style.background = active ? 'var(--dusty-pink-soft)' : '#fff';
+      });
+    }
+    document.querySelectorAll('input[name="delivery"]').forEach(r => r.addEventListener('change', renderSummary));
+    document.getElementById('fDistrict').addEventListener('change', e => {
+      const v = e.target.value;
+      if (v) { const dEl = document.querySelector('input[name="delivery"][value="' + (v === 'ঢাকা' ? 'in' : 'out') + '"]'); if (dEl) dEl.checked = true; }
+      renderSummary();
+    });
+    renderSummary();
+    window.addEventListener('meher:lang-changed', renderSummary);
+
+    const phoneEl = document.getElementById('fPhone');
+    phoneEl.addEventListener('input', () => { phoneEl.value = phoneEl.value.replace(/\D/g, '').slice(0, 11); });
+
+    const showErr = (id, msg) => { const el = document.getElementById(id); if (el) { el.textContent = msg; el.classList.add('show'); } };
+    const clearErrs = () => document.querySelectorAll('.field-error').forEach(e => e.classList.remove('show'));
+
+    document.getElementById('checkoutForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      clearErrs();
+      const f = e.target.elements;
+      let firstBad = null;
+      const mark = (el, ok) => { if (el) el.setAttribute('aria-invalid', ok ? 'false' : 'true'); };
+      const need = (el, errId, msg, ok) => { if (!ok) { showErr(errId, msg); mark(el, false); firstBad = firstBad || el; } else { mark(el, true); } };
+
+      const phone = f.phone.value.replace(/\D/g, '');
+      need(f.name, 'errName', MEHER.t('err_name'), f.name.value.trim().length >= 2);
+      need(f.phone, 'errPhone', MEHER.t('err_phone'), /^01[3-9]\d{8}$/.test(phone));
+      need(f.address, 'errAddress', MEHER.t('err_address'), f.address.value.trim().length >= 5);
+      if (!f.district.value) { MEHER.toast(MEHER.t('co_err_district'), 'error'); firstBad = firstBad || f.district; }
+      if (firstBad) { firstBad.focus(); return; }
+
+      const delivery = f.delivery.value;
+      const btn = document.getElementById('placeOrderBtn');
+      btn.disabled = true; btn.textContent = MEHER.t('co_sending');
+      try {
+        const src = sessionStorage.getItem('shop_src') || '';
+        const vid = f.marketing.checked ? (localStorage.getItem('meher-vid') || '') : '';
+        const payload = {
+          action: 'order',
+          order: {
+            items: cart.map(x => ({ productId: x.id, qty: x.qty })),
+            src, vid,
+            name: f.name.value.trim(), phone, address: f.address.value.trim(),
+            district: f.district.value, delivery,
+            marketing: f.marketing.checked ? 1 : '', website: f.website.value
+          }
+        };
+        const r = await API.api(payload);
+        if (!r.ok) throw new Error(r.error || (MEHER.getLang() === 'en' ? 'Order failed' : 'অর্ডার হয়নি'));
+        try { MEHER.saveLastOrder({ orderId: r.orderId, total: r.total, name: f.name.value.trim(), phone, delivery, district: f.district.value, address: f.address.value.trim(), items: cart.map(x => ({ ...x })) }); } catch (x) {}
+        MEHER.saveCart([]);
+        localStorage.setItem('meher-ship-area', delivery === 'in' ? 'inside' : 'outside');
+        location.href = 'order-confirmation.html';
+      } catch (err) {
+        btn.disabled = false; btn.textContent = MEHER.t('co_submit');
+        MEHER.toast(err.message || (MEHER.getLang() === 'en' ? 'Something went wrong' : 'সমস্যা হয়েছে'), 'error');
+      }
+    });
+  })();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>জুয়েলারি — ARIFAH (আরিফাহ) | Bridal Necklace Sets &amp; Waist Chains</title>
+<meta name="description" content="ARIFAH জুয়েলারি: গোল্ড-প্লেটেড ব্রিডাল নেকলেস সেট (পার্ল ও কুন্দন) ও কোমরের ভিতর — সারাদেশে ক্যাশ অন ডেলিভারি।">
+<meta property="og:title" content="জুয়েলারি — ARIFAH"><meta property="og:type" content="website"><meta name="theme-color" content="#352344">
+<link rel="icon" type="image/svg+xml" href="assets/img/placeholder.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main"><span data-i18n="skip_to_content">Skip to content</span></a>
+<div id="site-header"></div>
+
+<main id="main">
+  <div class="container page-head">
+    <span class="eyebrow"><a href="index.html" style="color:inherit"><span data-i18n="crumb_home">Home</span></a> / <span data-i18n="crumb_jewelry">Jewelry</span></span>
+    <h1 data-i18n="jewelry_h1">জুয়েলারি কালেকশন</h1>
+    <p class="text-muted" style="max-width:60ch" data-i18n-html="jewelry_sub">গোল্ড-প্লেটেড ব্রিডাল নেকলেস সেট ও কোমরের ভিতর — পার্ল, কুন্দন ও পাথর বসানো ডিজাইন। বিয়ে, গায়ে হলুদ, ঈদ ও প্রতিদিনের সাজে।<br>সব জুয়েলারি এক জায়গায়।</p>
+  </div>
+
+  <div class="container shop-layout">
+    <aside class="filter-panel" id="filterPanel" aria-label="Product filters">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+        <strong style="color:var(--purple)" data-i18n="filter_title">Filters</strong>
+        <button id="filterClose" class="icon-btn" aria-label="Close filters"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+
+      <div class="filter-group">
+        <h3 data-i18n="filter_category">Category</h3>
+        <label class="check"><input type="radio" name="subcat" data-sub="all" checked> সব</label>
+        <label class="check"><input type="radio" name="subcat" data-sub="bridal-set"> নেকলেস সেট · Bridal Sets</label>
+        <label class="check"><input type="radio" name="subcat" data-sub="waist-chain"> কোমরের ভিতর · Waist Chains</label>
+      </div>
+
+      <div class="filter-group">
+        <h3 data-i18n="filter_price">Price (৳)</h3>
+        <div style="display:flex;gap:.5rem">
+          <input class="input" id="minPrice" type="number" min="0" inputmode="numeric" placeholder="Min" aria-label="Minimum price" data-i18n-ph="filter_min">
+          <input class="input" id="maxPrice" type="number" min="0" inputmode="numeric" placeholder="Max" aria-label="Maximum price" data-i18n-ph="filter_max">
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h3 data-i18n="filter_stock">Stock</h3>
+        <label class="check"><input type="checkbox" id="availOnly" checked> <span data-i18n="filter_instock">In-stock items only</span></label>
+      </div>
+
+      <button class="btn btn-ghost btn-sm btn-block" id="clearFilters" style="margin-top:.5rem" data-i18n="filter_clear">Clear all</button>
+    </aside>
+
+    <section aria-label="Products">
+      <div class="sort-bar">
+        <p class="text-muted" style="font-size:.85rem"><strong id="resultCount" style="color:var(--purple)" data-i18n="loading">Loading…</strong></p>
+        <div style="display:flex;gap:.5rem;align-items:center">
+          <button class="btn btn-outline btn-sm filter-fab" id="filterFab" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span data-i18n="filter_fab">Filters</span></button>
+          <label for="sortSelect" class="sr-only">সাজানো</label>
+          <select id="sortSelect" class="input" style="width:auto;min-width:165px">
+            <option value="featured" data-i18n="sort_featured">Featured</option>
+            <option value="price_asc" data-i18n="sort_price_asc">Price: Low → High</option>
+            <option value="price_desc" data-i18n="sort_price_desc">Price: High → Low</option>
+            <option value="name" data-i18n="sort_name">Name A–Z</option>
+          </select>
+        </div>
+      </div>
+      <div class="product-grid" id="productGrid"></div>
+    </section>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+<script>const re = MEHER.initShop(null); window.addEventListener('meher:lang-changed', re);</script>
+</body>
+</html>

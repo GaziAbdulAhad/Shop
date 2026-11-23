@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>অর্ডার ট্র্যাক — ARIFAH (আরিফাহ)</title>
+<meta name="description" content="অর্ডার নম্বর ও মোবাইল নম্বর দিয়ে আপনার অর্ডারের বর্তমান অবস্থা জানুন।">
+<meta name="robots" content="noindex"><meta name="theme-color" content="#352344">
+<link rel="icon" type="image/svg+xml" href="assets/img/placeholder.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main"><span data-i18n="skip_to_content">Skip to content</span></a>
+<div id="site-header"></div>
+
+<main id="main" class="container" style="max-width:860px;padding-bottom:var(--sp-7)">
+  <div class="page-head" style="padding-bottom:var(--sp-4)">
+    <span class="eyebrow" data-i18n="track_eyebrow">কোথায় আমার অর্ডার?</span>
+    <h1 data-i18n="track_h1">অর্ডার ট্র্যাক করুন</h1>
+    <p class="text-muted" data-i18n="track_p">অর্ডার নম্বর ও অর্ডারের মোবাইল নম্বর দিন — বর্তমান অবস্থা দেখাবে।</p>
+  </div>
+
+  <form class="card card-pad" id="trackForm" novalidate style="display:grid;grid-template-columns:1fr 1fr auto;gap:.75rem;align-items:end">
+    <div class="field" style="margin:0"><label for="tId"><span data-i18n="track_id_l">অর্ডার নম্বর</span> <span class="req">*</span></label><input class="input" id="tId" required placeholder="ORD-…" autocomplete="off"></div>
+    <div class="field" style="margin:0"><label for="tPhone"><span data-i18n="track_phone_l">মোবাইল নম্বর</span> <span class="req">*</span></label><input class="input" id="tPhone" required inputmode="numeric" maxlength="11" placeholder="01XXXXXXXXX" autocomplete="tel-national"></div>
+    <button class="btn btn-primary" type="submit" id="trackBtn" style="height:46px" data-i18n="track_btn">দেখুন</button>
+  </form>
+  <p class="field-error" id="trackError" style="margin-top:.5rem"></p>
+
+  <div id="trackResult" style="margin-top:1.25rem"></div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+'use strict';
+const U = window.MEHER_UTIL;
+const params = new URLSearchParams(location.search);
+const idEl = document.getElementById('tId'), phoneEl = document.getElementById('tPhone');
+const err = document.getElementById('trackError'), result = document.getElementById('trackResult'), btn = document.getElementById('trackBtn');
+idEl.value = params.get('o') || params.get('id') || '';
+phoneEl.value = params.get('phone') || '';
+phoneEl.addEventListener('input', () => { phoneEl.value = phoneEl.value.replace(/\D/g, '').slice(0, 11); });
+
+const STEP = { 'নতুন': 1, 'যোগাযোগ হয়েছে': 1, 'কনফার্মড': 2, 'প্রসেসিং': 2, 'শিপড': 3, 'ডেলিভারড': 4 };
+const NAMES = () => [ ['📝', MEHER.t('st_1')], ['✅', MEHER.t('st_2')], ['🚚', MEHER.t('st_3')], ['🏠', MEHER.t('st_4')] ];
+const escHTML = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+
+document.getElementById('trackForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  err.classList.remove('show'); result.innerHTML = '';
+  phoneEl.value = phoneEl.value.replace(/\D/g, '').slice(0, 11);
+  if (!/^01[3-9]\d{8}$/.test(phoneEl.value)) { err.textContent = MEHER.t('err_phone'); err.classList.add('show'); return; }
+  btn.disabled = true; err.textContent = MEHER.t('track_searching'); err.classList.add('show'); err.style.color = 'var(--text-muted)';
+  try {
+    const r = await MEHER_API.api({ action: 'track', track: { orderId: idEl.value.trim(), phone: phoneEl.value } });
+    if (!r.ok) throw new Error(r.error || (MEHER.getLang() === 'en' ? 'Order not found' : 'অর্ডার পাওয়া যায়নি'));
+    err.classList.remove('show');
+    const st = STEP[r.status] || 0, cancelled = r.status === 'বাতিল';
+    result.innerHTML = `
+      <div class="card card-pad">
+        <div style="display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center">
+          <div><p class="hint">${MEHER.t('track_order_l')}</p><strong style="font-size:1.2rem;color:var(--purple)">${escHTML(r.orderId || idEl.value.trim())}</strong></div>
+          <span class="badge ${cancelled ? 'badge-red' : (st >= 4 ? 'badge-green' : 'badge-gold')}">${cancelled ? (MEHER.getLang() === 'en' ? 'Cancelled' : 'বাতিল') : escHTML(r.status || '')}</span>
+        </div>
+        ${r.time ? `<p class="hint" style="margin:.35rem 0">${escHTML(r.time)}${r.district ? ' · ' + escHTML(r.district) : ''}</p>` : ''}
+        <p style="margin:.4rem 0"><strong>${escHTML(r.product || '')}</strong></p>
+        <p>${MEHER.t('co_col_total')}: <b>${U.money(r.total || 0)}</b></p>
+        ${cancelled
+          ? `<div class="card" style="padding:.75rem;background:var(--danger-soft);border-color:#EFCFCF;color:var(--danger);margin-top:.5rem">${MEHER.t('track_cancelled_html')} <a href="contact.html" style="color:var(--danger);font-weight:700;text-decoration:underline">${MEHER.t('nav_contact')}</a></div>`
+          : `<div class="timeline" role="list" aria-label="${MEHER.t('track_delivery_progress')}">${NAMES().map((n, i) => `<div class="tl-step ${i < st ? 'done' : ''}" role="listitem"><div class="tl-dot"></div>${n[0]} ${n[1]}</div>`).join('')}</div>
+             <p style="text-align:center;margin:.25rem 0 0">${MEHER.t('track_current_status')} <b>${escHTML(r.status || '')}</b></p>`}
+      </div>`;
+  } catch (ex) {
+    err.style.color = '';
+    err.textContent = ex.message || (MEHER.getLang() === 'en' ? 'Something went wrong — try again.' : 'সমস্যা হয়েছে, আবার চেষ্টা করুন।');
+  } finally {
+    btn.disabled = false;
+  }
+});
+if (idEl.value && phoneEl.value) document.getElementById('trackForm').dispatchEvent(new Event('submit', { cancelable: true }));
+</script>
+</body>
+</html>

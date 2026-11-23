@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>প্রোডাক্ট — ARIFAH (আরিফাহ)</title>
+<meta name="description" content="ARIFAH পণ্যের বিস্তারিত — দাম, ছবি, ভিডিও ও কাস্টমার রিভিউ। সারাদেশে ক্যাশ অন ডেলিভারি।">
+<meta property="og:type" content="product"><meta name="theme-color" content="#352344">
+<link rel="icon" type="image/svg+xml" href="assets/img/placeholder.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+<script type="application/ld+json" id="productJsonLd"></script>
+</head>
+<body>
+<a class="skip-link" href="#main"><span data-i18n="skip_to_content">Skip to content</span></a>
+<div id="site-header"></div>
+
+<main id="main" class="container">
+  <div id="pdpRoot" aria-live="polite" style="padding:1rem 0"><p class="text-muted">লোড হচ্ছে…</p></div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+'use strict';
+const U = window.MEHER_UTIL, CFG = window.MEHER_CONFIG, API = window.MEHER_API;
+const id = new URLSearchParams(location.search).get('id');
+const root = document.getElementById('pdpRoot');
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const waHref = window.MEHER_WA;
+const t = (...a) => MEHER.t(...a);
+
+let ALL = [], P = null;
+
+function renderPDP() {
+  const all = ALL, p = P;
+  document.title = p.name + ' — ARIFAH (আরিফাহ)';
+  const cover = API.cover(p, 1200);
+  const images = [...new Set(API.imgList(p))].map(u => API.imgURL(u, 1400));
+  const vid = API.ytId(p.video);
+  const off = API.discountPct(p);
+  const old = Number(p.oldprice) || 0, price = Number(p.price) || 0;
+  const soldOut = API.isSoldOut(p);
+  const rating = Number(p.rcount) > 0 ? { r: Number(p.rating) || 0, c: Number(p.rcount) } : null;
+  const sub = (window.MEHER_SUBCATS[API.subOf(p)] || window.MEHER_SUBCATS['other']);
+  const subLabel = MEHER.getLang() === 'en' ? sub.en : sub.bn;
+
+  const lines = [], tags = [];
+  String(p.desc || '').split(/\n+/).map(x => x.trim()).filter(Boolean).forEach(l => {
+    tags.push(...(l.match(/#[^\s#]+/g) || []));
+    const t2 = l.replace(/#[^\s#]+/g, '').trim();
+    if (!t2 || /\bdm\b/i.test(t2) || /ইনবক্স|inbox/i.test(t2)) return;
+    lines.push(t2);
+  });
+  const stars = rating ? MEHER.starsHTML(rating.r) : '';
+
+  root.innerHTML = `
+  <nav aria-label="Breadcrumb" style="padding:.5rem 0 1rem;font-size:.8rem;color:var(--text-muted)">
+    <a href="index.html">${t('crumb_home')}</a> <span aria-hidden="true">/</span> <a href="shop.html">${t('crumb_shop')}</a> <span aria-hidden="true">/</span> <span aria-current="page" style="color:var(--purple);font-weight:600">${esc(p.name)}</span>
+  </nav>
+
+  <div class="commerce-grid" style="grid-template-columns:1fr 1.05fr;padding-bottom:0">
+    <div>
+      <div class="gallery-main" id="galleryMain">
+        <img id="galleryImg" src="${esc(images[0] || cover)}" alt="${esc(p.name)}" width="600" height="740" referrerpolicy="no-referrer" onerror="MEHER_API.imgFail(this)">
+      </div>
+      <div class="gallery-thumbs" id="galleryThumbs">
+        ${images.map((g, i) => `<button type="button" class="${i===0?'active':''}" data-full="${esc(g)}" aria-label="ছবি ${i + 1}"><img src="${esc(g)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="MEHER_API.imgFail(this)"></button>`).join('')}
+        ${vid ? `<button type="button" id="videoThumb" aria-label="ভিডিও দেখুন" style="position:relative;width:64px;height:76px;border-radius:var(--r-md);overflow:hidden;border:2px solid var(--gold);background:#111"><img src="https://img.youtube.com/vi/${vid}/mqdefault.jpg" alt="ভিডিও থাম্বনেইল" loading="lazy" style="width:100%;height:100%;object-fit:cover"><span style="position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:1.3rem">▶</span></button>` : ''}
+      </div>
+      ${vid ? `<div id="videoBox" style="margin-top:.6rem;display:none"><iframe src="https://www.youtube-nocookie.com/embed/${vid}" title="${esc(p.name)}" width="100%" height="340" style="border:0;border-radius:var(--r-md)" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>` : ''}
+    </div>
+
+    <div>
+      <span class="pc-cat">${esc(subLabel)} · SKU ${esc(p.id)}</span>
+      <h1 class="h-display" style="font-size:var(--fs-2xl);color:var(--purple);margin:.35rem 0 .5rem;line-height:1.35">${esc(p.name)}</h1>
+      ${rating ? `<div style="font-size:.85rem;margin-bottom:.35rem">${stars} <b>${rating.r}</b> <span class="text-muted">(${rating.c} ${t('pdp_reviewed_by')})</span></div>` : `<div class="hint" style="margin-bottom:.35rem">${MEHER.getLang() === 'en' ? 'No reviews yet — buy &amp; review' : 'এখনও রিভিউ নেই — কিনুন ও রিভিউ দিন'}</div>`}
+
+      <div class="pc-price" style="margin:.4rem 0 .2rem">
+        <span class="now" style="font-size:2.1rem">${U.money(price)}</span>
+        ${old > price ? `<span class="was" style="font-size:1.15rem">${U.money(old)}</span><span class="badge badge-red">Save ${off}%</span>` : ''}
+      </div>
+      <p class="hint">${MEHER.getLang() === 'en' ? 'Inclusive of all taxes · Price in BDT' : 'ভ্যাটসহ · বাংলাদেশি টাকায়'}</p>
+      ${old > price ? `<p class="hint" style="color:var(--success);font-weight:600">${MEHER.getLang() === 'en' ? 'You save' : 'আপনি বাঁচাচ্ছেন'} ${U.money(old - price)}</p>` : ''}
+      <p class="${soldOut ? 'pc-stock out' : 'pc-stock'}" style="font-size:.88rem;margin-top:.35rem">${soldOut ? t('out_of_stock') : '✓ ' + t('in_stock')}</p>
+
+      <div style="display:flex;gap:.6rem;margin-top:1.1rem;flex-wrap:wrap">
+        ${soldOut
+          ? ''
+          : `<button class="btn btn-primary" id="buyNowBtn" style="flex:1;min-width:150px;min-height:52px;font-size:1.05rem">${t('pdp_buy_now')}</button>
+             <button class="btn btn-outline" id="addToCartBtn" style="flex:1;min-width:130px;min-height:52px">🛒 ${t('add_to_cart')}</button>`}
+      </div>
+      ${soldOut ? `
+        <form id="restockForm" style="margin-top:.8rem;display:grid;gap:.4rem;max-width:340px">
+          <b style="font-size:.85rem">${t('pdp_restock_title')}</b>
+          <input class="input" name="phone" type="tel" inputmode="numeric" required placeholder="${t('pdp_restock_ph')}" aria-label="${t('pdp_restock_ph')}">
+          <button class="btn btn-gold btn-sm" type="submit">${t('pdp_restock_btn')}</button>
+          <p class="msg" role="status" style="font-size:.78rem;color:var(--success)"></p>
+        </form>` : ''}
+
+      <div style="display:flex;gap:.6rem;margin-top:.6rem">
+        <a class="btn btn-ghost btn-sm" href="${waHref('আসসালামু আলাইকুম, এই প্রোডাক্টটি সম্পর্কে জানতে চাই: ' + p.name + ' — ' + location.href)}" target="_blank" rel="noopener" style="border:1px solid #EDE8ED">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.25-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.5l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.47 0 1.45 1.06 2.87 1.21 3.07.15.2 2.1 3.2 5.08 4.48.71.31 1.26.49 1.7.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35m-5.42 7.4h-.01a9.87 9.87 0 0 1-5.03-1.37l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.31-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.16-3.48-8.41"/></svg>
+          ${t('pdp_ask_wa')}</a>
+        <a class="btn btn-ghost btn-sm" href="${CFG.messenger}" target="_blank" rel="noopener" style="border:1px solid #EDE8ED">Messenger</a>
+      </div>
+
+      <div class="card" style="margin-top:.8rem;padding:.75rem .9rem;font-size:.8rem;color:var(--text-muted);display:grid;gap:.3rem">
+        <span>🚚 <strong style="color:var(--text)">${t('pdp_delivery_l')}</strong> ${t('pdp_delivery_d')}</span>
+        <span>🔁 <strong style="color:var(--text)">${t('pdp_return_l')}</strong> ${t('pdp_return_d')}</span>
+        <span>✅ <strong style="color:var(--text)">${t('pdp_quality_l')}</strong> ${t('pdp_quality_d')}</span>
+      </div>
+
+      ${lines.length ? `<div style="margin-top:1.1rem"><h2 style="font-size:1.05rem;color:var(--purple)">${t('pdp_details')}</h2><ul style="margin-top:.35rem;display:grid;gap:.3rem;font-size:.9rem;list-style:none">${lines.map(l => `<li>✦ ${esc(l)}</li>`).join('')}</ul>${tags.length ? `<div style="display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.5rem">${[...new Set(tags)].map(t2 => `<span class="chip" style="font-size:.72rem">${esc(t2)}</span>`).join('')}</div>` : ''}</div>` : ''}
+    </div>
+  </div>
+
+  <section class="section" aria-labelledby="reviewsTitle" style="padding-top:var(--sp-6)">
+    <div class="section-head"><div><span class="eyebrow" data-i18n="pdp_reviews_eyebrow">${t('pdp_reviews_eyebrow')}</span><h2 class="section-title" id="reviewsTitle">${t('pdp_reviews_title')}</h2></div><a class="link-more" href="review.html">${t('write_review')}</a></div>
+
+    <!-- Rating Summary Bar -->
+    <div id="ratingSummary" class="card card-pad" style="margin-bottom:1rem;display:none"></div>
+
+    <div id="reviewList" class="card card-pad"><p class="text-muted">${t('loading')}</p></div>
+  </section>
+
+  <section class="section" aria-labelledby="relatedTitle" style="padding-bottom:var(--sp-6)">
+    <div class="section-head"><div><span class="eyebrow">${t('pdp_related_eyebrow')}</span><h2 class="section-title" id="relatedTitle">${t('pdp_related_title')}</h2></div></div>
+    <div class="product-grid" id="relatedGrid"></div>
+  </section>`;
+
+  /* ── gallery behavior ── */
+  const img = document.getElementById('galleryImg');
+  const main = document.getElementById('galleryMain');
+  document.getElementById('galleryThumbs')?.addEventListener('click', e => {
+    const btn = e.target.closest('[data-full]'); if (!btn) return;
+    img.src = btn.dataset.full;
+    document.querySelectorAll('#galleryThumbs button').forEach(b => b.classList.toggle('active', b === btn));
+  });
+  document.getElementById('videoThumb')?.addEventListener('click', () => { const box = document.getElementById('videoBox'); box.style.display = box.style.display === 'none' ? 'block' : 'none'; });
+  main.addEventListener('mouseenter', () => main.classList.add('zooming'));
+  main.addEventListener('mouseleave', () => main.classList.remove('zooming'));
+  main.addEventListener('mousemove', e => { const r = main.getBoundingClientRect(); img.style.transformOrigin = `${((e.clientX - r.left) / r.width) * 100}% ${((e.clientY - r.top) / r.height) * 100}%`; });
+  main.addEventListener('click', () => main.classList.toggle('zooming'));
+
+  /* ── actions ── */
+  document.getElementById('buyNowBtn')?.addEventListener('click', () => { MEHER.addToCart(p.id); location.href = 'checkout.html'; });
+  document.getElementById('addToCartBtn')?.addEventListener('click', () => MEHER.addToCart(p.id));
+  document.getElementById('restockForm')?.addEventListener('submit', async e => {
+    e.preventDefault();
+    const f = e.target, msg = f.querySelector('.msg');
+    const phone = f.phone.value.replace(/[\s-]/g, '');
+    if (!/^01[3-9]\d{8}$/.test(phone)) { msg.style.color = 'var(--danger)'; msg.textContent = MEHER.t('err_phone'); return; }
+    try {
+      const r = await API.api({ action: 'subscribe', sub: { phone, src: 'restock-' + p.id } });
+      if (!r.ok) throw new Error(r.error || 'হয়নি');
+      f.innerHTML = '<b>✓ ' + (MEHER.getLang() === 'en' ? 'Thanks! We will message you.' : 'ধন্যবাদ! স্টকে এলে মেসেজ করব।') + '</b>';
+    } catch (err) { msg.style.color = 'var(--danger)'; msg.textContent = err.message || 'সমস্যা হয়েছে'; }
+  });
+
+  /* ── live reviews from the sheet ── */
+  const reviewList = document.getElementById('reviewList');
+  const ratingSummary = document.getElementById('ratingSummary');
+  API.getReviews(p.id).then(list => {
+    // Calculate rating distribution
+    if (list.length > 0) {
+      const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+      let sum = 0;
+      list.forEach(r => { counts[r.rating] = (counts[r.rating] || 0) + 1; sum += r.rating; });
+      const avg = sum / list.length;
+
+      // Render rating summary bar
+      ratingSummary.style.display = 'grid';
+      ratingSummary.innerHTML = `
+        <div class="rating-summary">
+          <div class="rating-main">
+            <div class="big-score">${avg.toFixed(1)}</div>
+            <div class="stars">${MEHER.starsHTML(avg)}</div>
+            <div class="count">${list.length} ${t('pdp_reviewed_by')}</div>
+          </div>
+          <div class="rating-bars">
+            ${[5,4,3,2,1].map(star => {
+              const count = counts[star] || 0;
+              const pct = list.length ? Math.round((count / list.length) * 100) : 0;
+              return `<div class="rating-bar-row"><span class="label">${MEHER.starsHTML(star)}</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:${pct}%"></div></div><span class="pct">${pct}%</span></div>`;
+            }).join('')}
+          </div>
+        </div>`;
+    }
+
+    reviewList.innerHTML = list.length
+      ? list.map(r => `<div class="rev" style="border-bottom:1px solid var(--soft-gray);padding:.65rem 0"><div style="display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap"><span>${MEHER.starsHTML(r.rating)} <b>${esc(r.name)}</b>${r.verified ? ' <span style="color:var(--success);font-size:.72rem;font-weight:700">' + t('verified') + '</span>' : ''}</span></div>${r.text ? `<p style="font-size:.92rem;margin-top:.25rem">${esc(r.text)}</p>` : ''}${r.photo ? `<a href="${esc(API.imgURL(r.photo, 1400))}" target="_blank" rel="noopener"><img src="${esc(API.imgURL(r.photo, 400))}" alt="ক্রেতার ছবি" loading="lazy" referrerpolicy="no-referrer" style="max-width:180px;border-radius:var(--r-md);margin-top:.4rem" onerror="MEHER_API.imgFail(this)"></a>` : ''}</div>`).join('')
+      : `<p class="text-muted" style="margin:0">${t('no_reviews')} <a href="review.html" style="color:var(--purple);font-weight:700">${t('write_review')}</a></p>`;
+  }).catch(() => { reviewList.innerHTML = `<p class="text-muted" style="margin:0">${t('load_error')}</p>`; });
+
+  /* ── related ── */
+  const related = all.filter(x => String(x.id) !== String(p.id)).slice(0, 4);
+  MEHER.renderGrid(document.getElementById('relatedGrid'), related);
+}
+
+(async () => {
+  const all = await MEHER.loadProducts();
+  ALL = all;
+  const p = all.find(x => String(x.id) === String(id));
+  if (!p) {
+    root.innerHTML = `<div class="empty-state"><h2>${MEHER.getLang() === 'en' ? 'Product not found' : 'প্রোডাক্টটি পাওয়া যায়নি'}</h2><p class="text-muted">${MEHER.getLang() === 'en' ? 'It may have been moved or removed.' : 'এই প্রোডাক্টটি হয়তো সরানো হয়েছে।'}</p><a class="btn btn-primary" style="margin-top:1rem" href="shop.html">${t('crumb_shop')}</a></div>`;
+    return;
+  }
+  P = p;
+  MEHER.addRecent(p.id);
+  document.getElementById('productJsonLd').textContent = JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'Product',
+    name: p.name, sku: String(p.id), description: String(p.desc || '').slice(0, 500), image: API.cover(p, 1200),
+    brand: { '@type': 'Brand', name: 'ARIFAH' },
+    offers: { '@type': 'Offer', priceCurrency: 'BDT', price: Number(p.price) || 0, availability: API.isSoldOut(p) ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock' }
+  });
+  renderPDP();
+  window.addEventListener('meher:lang-changed', renderPDP);
+})().catch(err => {
+  console.error(err);
+  root.innerHTML = `<div class="empty-state"><h2>${MEHER.getLang() === 'en' ? 'Could not load product' : 'প্রোডাক্ট লোড করা যায়নি'}</h2><p class="text-muted">${MEHER.getLang() === 'en' ? 'Network or server issue — please try again shortly.' : 'ইন্টারনেট সংযোগ বা সার্ভার সমস্যা। একটু পর আবার চেষ্টা করুন।'}</p><a class="btn btn-primary" style="margin-top:1rem" href="shop.html">${t('crumb_shop')}</a></div>`;
+});
+</script>
+</body>
+</html>

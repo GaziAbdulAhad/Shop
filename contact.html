@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>যোগাযোগ — ARIFAH (আরিফাহ)</title>
+<meta name="description" content="ARIFAH-এ যোগাযোগ: WhatsApp, Messenger ও ফোনে অর্ডার ও প্রশ্নের উত্তর।">
+<meta property="og:title" content="যোগাযোগ — ARIFAH"><meta property="og:type" content="website"><meta name="theme-color" content="#352344">
+<link rel="icon" type="image/svg+xml" href="assets/img/placeholder.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main"><span data-i18n="skip_to_content">Skip to content</span></a>
+<div id="site-header"></div>
+
+<main id="main" class="container" style="max-width:900px;padding-bottom:var(--sp-7)">
+  <div class="page-head" style="text-align:center;padding-bottom:var(--sp-5)">
+    <div style="font-size:2.2rem" aria-hidden="true">📞</div>
+    <h1 style="font-family:var(--font-display);color:var(--purple);font-size:var(--fs-3xl)" data-i18n="ct_h1">যোগাযোগ করুন</h1>
+    <p class="text-muted" style="max-width:52ch;margin:0 auto" data-i18n="ct_sub">অর্ডার, সাইজ, রিটার্ন বা যেকোনো প্রশ্নে — আমরা WhatsApp-এ সবচেয়ে দ্রুত উত্তর দিই।</p>
+  </div>
+
+  <div id="contactCards" class="cat-grid" style="grid-template-columns:repeat(3,1fr)"></div>
+
+  <div class="card card-pad" style="margin-top:1.5rem;text-align:center">
+    <h2 style="font-family:var(--font-display);color:var(--purple);font-size:var(--fs-lg)" data-i18n="ct_box_h">অর্ডার দিয়েছেন?</h2>
+    <p class="text-muted" style="margin:.4rem auto .8rem;max-width:44ch" data-i18n="ct_box_p">অর্ডার নম্বর ও মোবাইল নম্বর দিয়ে এক পলকে অবস্থা দেখে নিন।</p>
+    <a class="btn btn-primary" href="track.html" data-i18n="ct_track">অর্ডার ট্র্যাক করুন</a>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+'use strict';
+const CFG = window.MEHER_CONFIG;
+const wa = window.MEHER_WA('আসসালামু আলাইকুম, সাহায্য দরকার');
+const cards = [
+  { icon: '<svg width="34" height="34" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.25-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.5l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.47 0 1.45 1.06 2.87 1.21 3.07.15.2 2.1 3.2 5.08 4.48.71.31 1.26.49 1.7.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35m-5.42 7.4h-.01a9.87 9.87 0 0 1-5.03-1.37l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.31-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.16-3.48-8.41"/></svg>',
+    title: 'WhatsApp', sub: CFG.whatsapp, href: wa, btn: 'ct_message', external: true },
+  { icon: '<svg width="34" height="34" viewBox="0 0 24 24" fill="#0084FF" aria-hidden="true"><path d="M12 0C5.37 0 0 4.97 0 11.11c0 3.5 1.74 6.61 4.47 8.65V24l4.09-2.24c1.1.3 2.25.46 3.44.46 6.63 0 12-4.97 12-11.11S18.63 0 12 0zm1.19 14.96l-3.05-3.26-5.97 3.26L10.73 8l3.13 3.26L19.75 8 12.28 14.96z"/></svg>',
+    title: 'Messenger', sub: 'Facebook', href: CFG.messenger, btn: 'ct_chat', external: true },
+  { icon: '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 11.91a16 16 0 0 0 6 6l3.27-1.27a2 2 0 0 1 2.11.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+    title: 'ct_phone', sub: CFG.hotline, href: CFG.hotlineHref, btn: 'ct_call', external: false, titleKey: true }
+];
+const render = () => {
+  document.getElementById('contactCards').innerHTML = cards.map(c => `
+    <div class="card card-pad" style="text-align:center;display:flex;flex-direction:column;align-items:center">
+      ${c.icon}
+      <h2 style="font-size:1rem;color:var(--purple);margin:.5rem 0 .15rem">${c.titleKey ? MEHER.t(c.title) : c.title}</h2>
+      <p class="text-muted" style="font-size:.85rem;margin-bottom:.6rem">${c.sub}</p>
+      <a class="btn btn-outline btn-sm" href="${c.href}" ${c.external ? 'target="_blank" rel="noopener"' : ''}>${MEHER.t(c.btn)}</a>
+    </div>`).join('');
+};
+render();
+window.addEventListener('meher:lang-changed', render);
+</script>
+</body>
+</html>

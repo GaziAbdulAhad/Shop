@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms & Conditions — ARIFAH (আরিফাহ)</title>
+<meta name="description" content="ARIFAH-এর Terms & Conditions — শর্তাবলি, ডেলিভারি, রিটার্ন ও প্রাইভেসি।">
+<meta property="og:title" content="Terms og:title" content="Terms & Conditions — MEHER Conditions — ARIFAH"><meta property="og:type" content="website"><meta name="theme-color" content="#352344">
+<link rel="icon" type="image/svg+xml" href="assets/img/placeholder.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main"><span data-i18n="skip_to_content">Skip to content</span></a>
+<div id="site-header"></div>
+<main id="main" class="container prose" style="padding-bottom:var(--sp-7)">
+  <div class="page-head" style="padding-bottom:var(--sp-3)">
+    <span class="eyebrow"><a href="index.html" style="color:inherit"><span data-i18n="pr_home">Home</span></a> / <span data-i18n="pr_crumb">Policy</span></span>
+    <p class="hint" style="margin-top:.25rem"><a href="policy.html" style="color:var(--purple);font-weight:700" data-i18n="pr_all_hub">All policies in one place →</a></p>
+  </div>
+  <div id="policyContent" class="card card-pad"><p class="text-muted" data-i18n="loading">Loading…</p></div>
+  
+</main>
+<div id="site-footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/policies.js"></script>
+<script src="assets/js/policy-render.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+  const pick = null;
+  MEHER_POLICY.renderPolicy(document.getElementById('policyContent'), 'terms', pick);
+  
+  window.addEventListener('meher:lang-changed', () => {
+    MEHER_POLICY.renderPolicy(document.getElementById('policyContent'), 'terms', pick);
+    
+  });
+</script>
+</body>
+</html>

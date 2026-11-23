@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>কার্ট — ARIFAH (আরিফাহ)</title>
+<meta name="description" content="আপনার কার্ট রিভিউ করুন — পরিমাণ, টোটাল ও ডেলিভারি চার্জ দেখুন।">
+<meta name="robots" content="noindex"><meta name="theme-color" content="#352344">
+<link rel="icon" type="image/svg+xml" href="assets/img/placeholder.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main"><span data-i18n="skip_to_content">Skip to content</span></a>
+<div id="site-header"></div>
+
+<main id="main" class="container">
+  <div class="page-head" style="padding-bottom:var(--sp-4)">
+    <span class="eyebrow" data-i18n="cart_eyebrow">আপনার ব্যাগ</span>
+    <h1><span data-i18n="cart_h1">কার্ট</span> <span id="cartTitleCount" class="text-muted" style="font-size:var(--fs-lg)"></span></h1>
+  </div>
+
+  <div class="empty-state card" id="cartEmpty" hidden>
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l1.5 13.5a1 1 0 0 1-1 1.1H5.5a1 1 0 0 1-1-1.1L6 7Z"/><path d="M9 11V6a3 3 0 0 1 6 0v5"/></svg>
+    <h2 data-i18n="cart_empty_h">কার্ট খালি</h2>
+    <p class="text-muted" data-i18n="cart_empty_p">ব্রিডাল নেকলেস সেট বা কোমরের ভিতর পছন্দ করুন।</p>
+    <a class="btn btn-primary" style="margin-top:1.2rem" href="shop.html" data-i18n="cart_empty_cta">প্রোডাক্ট দেখুন</a>
+  </div>
+
+  <div class="commerce-grid" id="cartLayout">
+    <div class="card card-pad">
+      <div id="cartItems"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem;gap:.5rem;flex-wrap:wrap">
+        <a class="btn btn-ghost btn-sm" href="shop.html" data-i18n="cart_continue">← আরও পণ্য দেখুন</a>
+        <button class="btn btn-ghost btn-sm" id="clearCartBtn" style="color:var(--danger)" data-i18n="cart_clear">কার্ট খালি করুন</button>
+      </div>
+    </div>
+
+    <aside class="card card-pad" aria-label="Order summary">
+      <h2 style="font-family:var(--font-display);color:var(--purple);font-size:var(--fs-xl);margin-bottom:.75rem" data-i18n="cart_summary_h">অর্ডার সামারি</h2>
+      <div class="sum-row"><span data-i18n="cart_subtotal">সাবটোটাল</span><span id="sumSubtotal">৳0</span></div>
+      <div class="sum-row" style="align-items:center"><span data-i18n="cart_deli_short">ডেলিভারি</span>
+        <select class="input" id="shipArea" style="width:auto;min-height:38px;font-size:.85rem" aria-label="ডেলিভারি এলাকা">
+          <option value="inside" data-i18n="cart_deli_in">ঢাকার ভেতরে — ৳৬০</option>
+          <option value="outside" selected data-i18n="cart_deli_out">ঢাকার বাইরে — ৳১২০</option>
+        </select>
+      </div>
+      <div class="sum-row"><span data-i18n="cart_shipping">ডেলিভারি চার্জ</span><span id="sumShipping">৳120</span></div>
+      <div class="sum-row total"><span data-i18n="cart_col_total">মোট</span><span id="sumTotal">৳0</span></div>
+      <p class="hint" style="margin:.5rem 0 1rem" data-i18n="cart_cod_note">ক্যাশ অন ডেলিভারি — পণ্য হাতে পেয়ে পরিশোধ করবেন।</p>
+      <a class="btn btn-primary btn-block" href="checkout.html" style="font-size:1rem" data-i18n="cart_checkout">অর্ডার করুন →</a>
+      <p class="hint" style="text-align:center;margin-top:.6rem" data-i18n="cart_trust">৭ দিনের মধ্যে রিপোর্ট করুন · কোয়ালিটি চেক করা</p>
+    </aside>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+'use strict';
+const U = window.MEHER_UTIL, CFG = window.MEHER_CONFIG, API = window.MEHER_API;
+const cartLayout = document.getElementById('cartLayout');
+const cartEmpty = document.getElementById('cartEmpty');
+const shipArea = document.getElementById('shipArea');
+shipArea.value = localStorage.getItem('meher-ship-area') || 'outside';
+
+async function renderCart() {
+  await MEHER.loadProducts();
+  const cart = MEHER.getCart();
+  const count = cart.reduce((n, i) => n + i.qty, 0);
+  document.getElementById('cartTitleCount').textContent = count ? `(${count} টি)` : '';
+
+  if (!cart.length) { cartLayout.hidden = true; cartEmpty.hidden = false; return; }
+  cartLayout.hidden = false; cartEmpty.hidden = true;
+
+  document.getElementById('cartItems').innerHTML = cart.map((item, idx) => {
+    const p = MEHER.lineProduct(item); if (!p) return '';
+    const img = API.cover(p, 200);
+    return `
+    <div class="line-item" data-idx="${idx}">
+      <a href="product.html?id=${encodeURIComponent(p.id)}"><img src="${img}" alt="${String(p.name).replace(/["<>&]/g,'')}" loading="lazy" referrerpolicy="no-referrer" onerror="MEHER_API.imgFail(this)"></a>
+      <div>
+        <a href="product.html?id=${encodeURIComponent(p.id)}" style="font-weight:700;color:var(--purple);line-height:1.4">${p.name}</a>
+        <p class="hint" style="margin:.2rem 0 .5rem">SKU ${p.id}</p>
+        <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+          <div class="qty-box" aria-label="পরিমাণ">
+            <button type="button" data-dec aria-label="কমান">−</button>
+            <input type="text" inputmode="numeric" value="${item.qty}" data-qty aria-label="পরিমাণ">
+            <button type="button" data-inc aria-label="বাড়ান">+</button>
+          </div>
+          <span style="font-weight:800;color:var(--purple)">${U.money(Number(p.price) * item.qty)}</span>
+        </div>
+      </div>
+      <button class="icon-btn" data-remove aria-label="Remove item" style="color:var(--text-muted)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+    </div>`;
+  }).join('');
+
+  const sub = await MEHER.cartSubtotal();
+  const ship = shipArea.value === 'inside' ? CFG.shipping.insideDhaka : CFG.shipping.outsideDhaka;
+  document.getElementById('sumSubtotal').textContent = U.money(sub);
+  document.getElementById('sumShipping').textContent = U.money(ship);
+  document.getElementById('sumTotal').textContent = U.money(sub + ship);
+}
+
+shipArea.addEventListener('change', () => { localStorage.setItem('meher-ship-area', shipArea.value); renderCart(); });
+document.getElementById('cartItems').addEventListener('click', e => {
+  const row = e.target.closest('.line-item'); if (!row) return;
+  const idx = +row.dataset.idx, c = MEHER.getCart();
+  if (e.target.closest('[data-dec]')) { MEHER.setQty(idx, c[idx].qty - 1); renderCart(); }
+  else if (e.target.closest('[data-inc]')) { MEHER.setQty(idx, c[idx].qty + 1); renderCart(); }
+  else if (e.target.closest('[data-remove]')) { MEHER.removeFromCart(idx); renderCart(); }
+});
+document.getElementById('cartItems').addEventListener('change', e => {
+  const input = e.target.closest('[data-qty]'); if (!input) return;
+  MEHER.setQty(+input.closest('.line-item').dataset.idx, parseInt(input.value.replace(/\D/g, '') || '1', 10));
+  renderCart();
+});
+document.getElementById('clearCartBtn').addEventListener('click', () => { MEHER.saveCart([]); renderCart(); });
+
+renderCart();
+window.addEventListener('meher:lang-changed', renderCart);
+</script>
+</body>
+</html>
